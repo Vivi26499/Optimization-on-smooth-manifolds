@@ -1,0 +1,205 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 7}{Due date: }{Vivi}[https://github.com/Vivi26499]{24S153073}
+
+\begin{document}
+\begin{prob} \textbf{Reimannian Hessian on Stiefel}\\
+    For $p \leq n$, consider the Stiefel manifold
+    \begin{equation*}
+        \mathcal{M} = \text{St}(n,p) = \{X \in \mathbb{R}^{n \times p} : X^\top X = I_p\}
+    \end{equation*}
+    as an embedded submanifold of $\mathcal{E} = \mathbb{R}^{n \times p}$. 
+    We consider $\mathcal{M}$ as a Riemannian manifold of $\mathcal{E} = \mathbb{R}^{n \times p}$, 
+    endowed with the usual inner product $\langle X, Y \rangle = \tr (X^\top Y)$.\\
+    The orthogonal projection to $T_X\mathcal{M}$ is given by
+    \begin{equation*}
+        \Proj_X: \mathcal{E} \to T_X\mathcal{M}, \quad \Proj_X(U) = U - \frac{1}{2} X (X^\top U + U^\top X) = U - X \text{Sym}(X^\top U),
+    \end{equation*}
+    where $\text{Sym}(A) = \frac{1}{2}(A + A^\top)$ is the symmetrization of $A$.\\
+    Let $f: \mathcal{M} \to \mathbb{R}$ be smooth, and let $\bar{f}$ be a smooth extension of $f$.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Give a formula for the Riemannian Hessian $\text{Hess}f$ of $f$ in terms of the Euclidean gradient and Hessian of $\bar{f}$.
+    \end{enumerate}
+    Let $R$ be a retraction on Stiefel (e.g., QR or polar retraction). Let $(X, U) \in T\mathcal{M}$, 
+    the finite difference approximation of the Riemannian Hessian is given by
+    \begin{equation*}
+        \text{Hess}f(X)[U] \approx \frac{1}{\bar t} [\Proj (\grad f (R_X(\bar t U))) - \grad f(X)]
+    \end{equation*}
+    where $\bar t > 0$ is a small step size.
+    \begin{enumerate}[label=(\arabic*), resume]
+        \item For the particular cost function
+        \begin{equation*}
+            f(X) = \tr (X^\top A X), \quad A \in \mathbb{R}^{n \times n} \text{with} A = A^\top,
+        \end{equation*}
+        write down a formula for the Riemannian Hessian of $f$, and a formula for the finite difference approximation of the Riemannian Hessian.
+        Implement both formulas, and compare them for different values of $\bar{t}$ (e.g., $\bar{t} = 10^{-1}, 10^{-2}, 10^{-4}, 10^{-8}$).
+    \end{enumerate}
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item The Riemannian gradient of $f$ is given by
+        \begin{align*}
+            \grad f(X) &= \Proj_X(\grad \bar{f}(X))\\
+            &= \grad \bar{f}(X) - X \text{Sym}(X^\top \grad \bar{f}(X)),
+        \end{align*}
+        which can be smoothly extended as
+        \begin{equation*}
+            \overline{\grad f}(X) = \grad \bar{f}(X) - X \text{Sym}(X^\top \grad \bar{f}(X)).
+        \end{equation*}
+        The derivative of $\overline{\grad f}$ is given by
+        \begin{align*}
+            D \overline{\grad f}(X)[U] &= D (\grad \bar{f}(X) - X \text{Sym}(X^\top \grad \bar{f}(X)))[U]\\
+            &= D \grad \bar{f}(X)[U] - D(X \text{Sym}(X^\top \grad \bar{f}(X)))[U]\\
+            &= \Hess \bar{f}(X)[U] - U \text{Sym}(X^\top \grad \bar{f}(X)) - X \text{Sym}(U^\top \grad \bar{f}(X) + X^\top \Hess \bar{f}(X)[U]).
+        \end{align*}
+        Observes that
+        \begin{align*}
+            \Proj_X(X S) &= X S - X \text{Sym}(X^\top X S)\\
+            &= X S - X \text{Sym}(S) = 0
+        \end{align*}
+        for any symmetric $S \in \mathbb{R}^{p \times p}$.\\
+        Then, the Riemannian Hessian of $f$ is given by
+        \begin{align*}
+            \Hess f(X)[U] &= \nabla_U \grad f(X)\\
+            &= \Proj_X(D \overline{\grad f}(X)[U])\\
+            &= \Proj_X(\Hess \bar{f}(X)[U]) - \Proj_X(U \text{Sym}(X^\top \grad \bar{f}(X))).
+        \end{align*}
+        \item Define $\bar{f}(X) = \tr(X^\top A X)$, then for $(X, U) \in T\mathcal{M}$, we have
+        \begin{align*}
+            \grad \bar f (X) &= 2 A X\\
+            \Hess \bar f (X)[U] &= 2 A U.
+        \end{align*}
+        Thus, the Riemannian Hessian of $f$ is given by
+        \begin{align*}
+            \Hess f(X)[U] &= \Proj_X(2 A U) - \Proj_X(U \text{Sym}(X^\top 2 A X))\\
+            &= 2\Proj_X(A U) - 2\Proj_X(U X^\top A X).
+        \end{align*}
+        The Riemannian gradient of $f$ is given by
+        \begin{align*}
+            \grad f(X) &= \Proj_X(2 A X)\\
+            &= 2 A X - X \text{Sym}(X^\top 2 A X)\\
+            &= 2 A X - 2 X X^\top A X\\
+            &= 2 (I_n - X X^\top) A X.
+        \end{align*}
+    \end{enumerate}
+\end{sol}
+
+ \begin{prob} \textbf{Second-order critical points for Rayleigh quotient are global optimal}\\
+    Let $f: \mathcal{M} \to \mathbb{R}$ be a smooth Riemannian manifold $\mathcal{M}$. We call $x \in \mathcal{M}$ a second-order critical point of $f$ if
+    \begin{equation*}
+        \grad f(x) = 0 \quad \text{and} \quad \Hess f(x) \succeq 0.
+    \end{equation*}
+    Let $\mathcal{M} = \mathbb{S}^{d-1}$ be the $(d-1)$-dimensional sphere embedded in $\mathbb{R}^d$ with the usual inner product, and let
+    \begin{equation*}
+        f(x) = \frac{1}{2} x^\top A x,
+    \end{equation*}
+    where symmetric $A \in \mathbb{R}^{d \times d}$. This cost function is sometimes called the Rayleigh quotient on the sphere.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Give expressions for the Riemannian gradient and Hessian of $f$.
+        \item Show that all second-order critical points $x$ of $f$ are globally optimal.
+    \end{enumerate}
+ \end{prob}
+
+ \begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item We've already known that the projection to $T_x\mathcal{M}$ is given by
+        \begin{equation*}
+            \Proj_x(u) = (I - x x^\top) u.
+        \end{equation*}
+        The Euclidean gradient and Hessian of $\bar f = \frac{1}{2} x^\top A x$ are given by
+        \begin{align*}
+            \grad \bar f(x) &= A x\\
+            \Hess \bar f(x)[u] &= A x.
+        \end{align*}
+        Thus, the Riemannian gradient of $f$ are given by
+        \begin{align*}
+            \grad f(x) &= \Proj_x(\grad \bar f(x))\\
+            &= (I - x x^\top) A x,
+        \end{align*}
+        which can be smoothly extended as
+        \begin{equation*}
+            \overline{\grad f}(x) = (I - x x^\top) A x.
+        \end{equation*}
+        The derivative of $\overline{\grad f}$ is given by
+        \begin{align*}
+            D \overline{\grad f}(x)[u] &= D((I - x x^\top) A x)[u]\\
+            &= (I - x x^\top) A u - (u x^\top + x u^\top) A x.
+        \end{align*}
+        Then, the Riemannian Hessian of $f$ is given by
+        \begin{align*}
+            \Hess f(x)[u] &= \Proj_x(D \overline{\grad f}(x)[u])\\
+            &= \Proj_x((I - x x^\top) A u - (u x^\top + x u^\top) A x)\\
+            &= (I - x x^\top) A u - (u x^\top + x u^\top) A x - x x^\top A u + u x^\top A x x^\top A x\\
+            &= (I - x x^\top) A u - (u x^\top + x u^\top) A x\\
+            &= A u - 2(x^\top A u) x - (x^\top A x) u.
+        \end{align*}
+        Then, the Riemannian Hessian of $f$ is given by
+        \begin{align*}
+            \Hess f(x)[u] &= \nabla_u \grad f(x)\\
+            &= \Proj_x(D \overline{\grad f}(x)[u])\\
+            &= \Proj_x(A u) - x^\top A x\\
+            &= (I - x x^\top) A u - (x^\top A x) u
+        \end{align*}
+        \item For critical points $x$ of $f$, we have $\grad f(x) = (I - x x^\top) A x = 0$, which implies $A x = (x^\top A x) x$,
+        i.e., $x$ is an eigenvector of $A$ with eigenvalue $x^\top A x$. Moreover, since $x \in \mathbb{S}^{d-1}$, we have $x^\top x = 1$, 
+        which implies $x$ is a unit eigenvector of $A$.\\
+        Let $\lambda_1, \cdots, \lambda_d$ be the eigenvalues of $A$, and $x_1, \cdots, x_d$ be the corresponding orthonormal eigenvectors.
+        Then, $x$ is a critical point of $f$ implies $x = x_i$ for some $i$.\\
+        Furthermore, $\Hess f(x)[u] \succeq 0$ implies for any $u \in T_x\mathbb{S}^{d-1}$, we have
+        \begin{align*}
+            0 &\leq \langle u, \Hess f(x)[u] \rangle\\
+            &= \langle u, (I - x x^\top) A u - (x^\top A x) u \rangle\\
+            &= u^\top (I - x x^\top) A u - (x^\top A x) u^\top u\\
+            &= u^\top A u - \lambda_i \norm{u}^2.
+        \end{align*}
+        In particular, since $\{x_1, \ldots, x_d\}$ is an orthonormal basis of $\mathbb{R}^d$, 
+        then $x_j \in T_{x_i}\mathbb{S}^{d-1}$ for $j \neq i$, thus we can choose $u = x_j$ to get
+        \begin{align*}
+            0 &\leq x_j^\top A x_j - \lambda_i \norm{x_j}^2\\
+            &= \lambda_j - \lambda_i,
+        \end{align*}
+        which implies $\lambda_i$ is the smallest eigenvalue of $A$, i.e., $x = x_i$ is globally optimal of $f$.
+    \end{enumerate}
+ \end{sol}
+
+ \begin{prob} \textbf{Geodesics on the sphere}\\
+    Let $\mathbb{S}^{d-1}$ be the $(d-1)$-dimensional sphere embedded in $\mathbb{R}^d$ with the usual inner product. 
+    Let $(x, v) \in T\mathcal{M}$, consider
+    \begin{equation*}
+        c(t) = \cos(t) x + \sin(t) \frac{v}{\norm{v}}.
+    \end{equation*}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that the curve $c(t)$ is a geodesic on $\mathbb{S}^{d-1}$.
+    \end{enumerate}
+ \end{prob}
+
+ \begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Since $\norm{c(t)} = \cos^2(t) + \sin^2(t) = 1$, we have $c(t) \in \mathbb{S}^{d-1}$.\\
+        The velocity of $c(t)$ is given by
+        \begin{equation*}
+            \dot{c}(t) = -\sin(t) x + \cos(t) \frac{v}{\norm{v}}.
+        \end{equation*}
+        Thus at $t = 0$, we have
+        \begin{align*}
+            c(0) &= x\\
+            \dot{c}(0) &= -\sin(0) x + \cos(0) \frac{v}{\norm{v}}\\
+            &= \frac{v}{\norm{v}}.
+        \end{align*}
+        Then, the acceleration of $c(t)$ is given by
+        \begin{align*}
+            \ddot{c}(t) &= \frac{D}{dt} \dot{c}(t)\\
+            &= \Proj_{c(t)} \left(\frac{d}{dt} \dot{c}(t)\right)\\
+            &= \Proj_{c(t)} \left(-\cos(t) x - \sin(t) \frac{v}{\norm{v}}\right).
+        \end{align*}
+        At $t = 0$, we have
+        \begin{align*}
+            \ddot{c}(0) &= \Proj_x \left(-x\right)\\
+            &= (I - x x^\top) (-x)\\
+            &= -x + x\\
+            &= 0.
+        \end{align*}
+    \end{enumerate}
+ \end{sol}
+\end{document}

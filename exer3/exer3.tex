@@ -1,0 +1,281 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 3}{Due date: }{Vivi}[]{24S153073}
+
+\begin{document}
+
+\begin{prob} \textbf{Smooth maps and differentials}\
+    \begin{itemize}
+        \item[(1)] let $\mathcal{M}, \mathcal{M}', \mathcal{M}''$ be embedded submanifolds of the linear spaces 
+        $\mathcal{E}, \mathcal{E}', \mathcal{E}''$, respectively.\\
+        For smooth maps $F: \mathcal{M} \to \mathcal{M}'$ and $G: \mathcal{M}' \to \mathcal{M}''$, 
+        show that $G \circ F: \mathcal{M} \to \mathcal{M}''$ is smooth, and the chain rule is satisfied:
+        \begin{equation*}
+            D(G \circ F)(x) = DG(F(x)) \circ DF(x).
+        \end{equation*}
+        \item[(2)] Give an example of an embedded submanifold $\mathcal{M}$ in a linear space $\mathcal{E}$ 
+        and a smooth function $f: \mathcal{M} \to \mathbb{R}$ for which 
+        there does not exist a smooth extension $\tilde{f}: \mathcal{E} \to \mathbb{R}$ smooth on all of $\mathcal{E}$.
+        Aim for an example where $f$ is bounded on $\mathcal{M}$.
+    \end{itemize}
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)]
+        \begin{itemize}
+            \item[(a)] smoothness\\
+            Since $F$ and $G$ are smooth, we have two smooth extensions $\bar{F}: U \to \mathcal{E}'$ and $\bar{G}: U' \to \mathcal{E}''$.\\
+            Let $\tilde{F}: U \cap \bar{F}^{-1}(U') \to U'$ be the restriction of $\bar{F}$.\\
+            Since $\bar{F}$ is smooth, $\bar{F}^{-1}(U')$ is open in $U$, then $U \cap \bar{F}^{-1}(U')$ is open in $U$.\\
+            Moreover, for $x \in \mathcal{M}$, we have $\bar{F}(x) = F(x) \in \mathcal{M}' \subseteq U'$ , i.e., $x \in \bar{F}^{-1}(U')$.\\
+            Then $x \in U \cap \bar{F}^{-1}(U')$, i.e., $\mathcal{M} \subseteq U \cap \bar{F}^{-1}(U')$.\\
+            So $U \cap \bar{F}^{-1}(U')$ is a neighborhood of $\mathcal{M}$ in $\mathcal{E}$, and $\tilde{F}$ is a smooth extension of $F$.\\
+            Then, $\bar{G} \circ \tilde{F}: U \cap \bar{F}^{-1}(U') \to \mathcal{E}''$ is a smooth extension of $G \circ F$, therefore $G \circ F$ is smooth.
+            \item[(b)] chain rule\\
+            Let $(x, v) \in T\mathcal{M}$, then $x \in \mathcal{M}$ and $v \in T_x\mathcal{M}$, 
+            and a smooth curve $c: \mathbb{R} \to \mathcal{M}$ with $c(0) = x$ and $c'(0) = v$.\\
+            Then $F \circ c: \mathbb{R} \to \mathcal{M}'$ is a smooth curve with $(F \circ c)(0) = F(x)$ and $(F \circ c)'(0) = DF(x)[v]$.\\
+            Therefore, we have
+            \begin{align*}
+                D(G \circ F)(x)[v] &= D(G \circ F)(c(0))[c'(0)]\\
+                & = \frac{d}{dt} (G \circ F)(c(t))|_{t=0}\\
+                & = DG((F \circ c)(0))[(F \circ c)'(0)]\\
+                & = DG(F(x))[DF(x)[v]]\\
+                & = DG(F(x)) \circ DF(x)[v].
+            \end{align*}
+        \end{itemize}
+        \item[(2)] $\mathcal{E} = \mathbb{R}, \mathcal{M} = \mathbb{R} \setminus  {0}, f(x) = \frac{1}{x}$.
+    \end{itemize}
+\end{sol}
+
+\begin{prob} \textbf{Submanifolds of submanifolds}\\
+    Let $\mathcal{M}$ be an embedded submanifold of a linear space $\mathcal{E}$, 
+    and $\mathcal{N}$ a subset of $\mathcal{M}$ defined by $\mathcal{N} = g^{-1}(0)$, where $g: \mathcal{M} \to \mathbb{R}^l$ is smooth 
+    and $\rank(Dg(x)) = l \geq 1$ for all $x \in \mathcal{N}$.\\
+    Show that $\mathcal{N}$ is itself an embedded submanifold of $\mathcal{E}$, of dimension $\dim(\mathcal{M}) - l$, 
+    with tangent spaces $T_x\mathcal{N} = \ker(Dg(x)) \subset T_x\mathcal{M}$.
+\end{prob}
+
+\begin{sol}
+    Assume that $\dim(\mathcal{E}) = d, \dim(\mathcal{M}) = m \leq d$.\\
+    For $m = d$, $\mathcal(N)$ is apparently an embedded submanifold of $\mathcal{E}$, and $\dim(\mathcal{N}) = d - l = m - l$.\\
+    For $m < d$, let the local defining function of $\mathcal{M}$ be $f: U \to \mathbb{R}^{d-m}$, where $U$ is a neighborhood of $\mathcal{M}$ in $\mathcal{E}$.\\
+    We can build a smooth extension of $\bar{g}: V \to \mathbb{R}^l$ of $g$ where $V$ is another neighborhood of $\mathcal{M}$ in $\mathcal{E}$.\\
+    Then we have a local defining funcion $F: U \cap V \to \mathbb{R}^{d-m+l}, F(x) = (f(x), \bar{g}(x))$.\\
+    Apparently $F$ is smooth.\\
+    Assume $F(x) = 0$,  then $f(x) = 0$ and $\bar{g}(x) = 0$, i.e., $x \in \mathcal{M}$ and $x \in \mathcal{N}$; 
+    conversely assume $x \in \mathcal{M}$ and $x \in \mathcal{N}$, then $f(x) = 0$ and $\bar{g}(x) = g(x) = 0$, i.e., $F(x) = 0$.\\
+    Then focus on the differential of $F$ at $x$, $DF(x): \mathcal{E} \to \mathbb{R}^{d-m+l}, DF(x)[v] = (Df(x)[v], D\bar{g}(x)[v])$.\\
+    \begin{align*}
+        \ker Dg(x) & = \{v \in T_x\mathcal{M}: Dg(x)[v] = 0\}\\
+        & = \{v \in T_x\mathcal{M}: D\bar{g}(x)[v] = 0\}\\
+        & = \{v \in \mathcal{E}: Df(x)[v] = 0, D\bar{g}(x)[v] = 0\}\\
+        & = \ker DF(x).
+    \end{align*}
+    Since, $\rank(Dg(x)) = l$, we have $\rank(\ker DF(x)) = \rank(\ker Dg(x)) = \dim(\mathcal{M}) - \rank(Dg(x)) = m - l$.\\
+    Then, $\rank(DF(x)) = \dim(\mathcal{E}) - \rank(\ker DF(x)) = d - (m - l) = d - m + l$.\\
+    Therefore, $F$ is a local defining function of $\mathcal{N}$, 
+    and $\mathcal{N}$ is an embedded submanifold of $\mathcal{E}$, of dimension $m - l = \dim(\mathcal{M}) - l$, 
+    with tangent spaces $T_x\mathcal{N} = \ker DF(x) = \ker Dg(x) \subset T_x\mathcal{M}$.
+\end{sol}
+
+\begin{prob} \textbf{Stereographic projection}\\
+    For $(x, v) \in T\mathbb{S}^{d-1}$, let $R_x(v)$ denote the point which lies on $\mathbb{S}^{d-1}$ 
+    and on the line connecting $x+v$ and $-x$, and which is not $-x$.
+    Show that $(x, v) \mapsto R_x(v)$ is well defined on the whole tangent bundle, and that it is retraction.
+\end{prob}
+
+\begin{sol}
+    The line connecting $x+v$ and $-x$ can be written as 
+    \begin{equation*}
+        R_x(v) = t(x+v) + (1-t)(-x) = tx + tv + tx -x = (2t-1)x + tv
+    \end{equation*}
+    where $t \in \mathbb{R} \setminus {0}$.\\
+    Since $x \in \mathbb{S}^{d-1}$, we have $x \cdot x = 1$ and $x \cdot v = 0$.Then, we have
+    \begin{align*}
+        R_x(v) \cdot R_x(v) & = (2t-1)^2 x \cdot x + t^2 v \cdot v + 2t(2t-1) x \cdot v\\
+        & = (2t-1)^2 + t^2\left\lVert v \right\rVert ^2\\
+        & = (4+\left\lVert v \right\rVert ^2)t^2 - 4t + 1 = 1.
+    \end{align*}
+    We get $t = \frac{4}{4+\left\lVert v \right\rVert ^2}$, then $R_x(v) = \frac{4(2x + v)}{4+\left\lVert v \right\rVert ^2} - x$, which is smooth.\\
+    For $c(t) = R_x(tv)$, we have
+    \begin{align*}
+        c(0) & = \frac{4(2x)}{4} - x = x.\\
+        c'(0) & = \frac{4v}{4} = v.
+    \end{align*}
+    Therefore, $(x, v) \mapsto R_x(v)$ is well defined on the whole tangent bundle, and it is retraction.
+\end{sol}
+
+\begin{prob} \textbf{QR retraction for small Stiefel}\\
+    We've showed that
+    \begin{equation*}
+        \mathcal{M} = \{X = (x, y) \in \mathbb{R}^d \times \mathbb{R}^d = \mathbb{R}^{d \times 2}: x^\top x = 1, y^\top y = 1, x^\top y = 0\}  
+    \end{equation*}
+    is an embedded submanifold of $\mathcal{E} = \mathbb{R}^d \times \mathbb{R}^d = \mathbb{R}^{d \times 2}$.
+    \begin{itemize}
+        \item[(1)] Show that for all $(X, V) \in T\mathcal{M}$, 
+        there is a unique way to write $X + V = QR$ where $Q \in \mathcal{M}$ and $R$ is upper triangular with positive diagonal entries. 
+        Then define $\mathcal{R} : T\mathcal{M} \rightarrow \mathcal{M}$ by $\mathcal{R}_X(V) = Q$. 
+        Hint: When is the QR decomposition unique for a matrix $A \in \mathbb{R}^{d \times m}$?
+        \item[(2)] Derive an explicit formula for $R_X(V)$, and use it to show that $\mathcal{R}$ is a retraction for $\mathcal{M}$.
+        \item[(3)] For $X \in \mathcal{M}$, is $\mathcal{R}_X: T_X\mathcal{M} \rightarrow \mathcal{M}$ surjective?
+    \end{itemize}
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)] For $(X, V) \in T\mathcal{M}, (X + V)^\top(X + V) = I + V^\top V \succ 0$, i.e., $X + V$ has full collumn rank.\\
+        Then, we have the QR decomposition $X + V = QR$ where $Q \in \mathcal{M}$ and $R$ is upper triangular with positive diagonal entries is unique.
+        \item[(2)] For $X = (x_1, x_2), V = (v_1, v_2)$, we have $X + V = (x_1 + v_1, x_2 + v_2) = QR$.\\
+        We can apply the Gram-Schmidt process to $x_1 + v_1, x_2 + v_2$ to get $Q = (q_1, q_2)$:
+        \begin{align*}
+            q_1 & = \frac{x_1 + v_1}{\left\lVert x_1 + v_1 \right\rVert},\\
+            q_2 & = \frac{x_2 + v_2 - (x_2 + v_2) \cdot q_1}{\left\lVert x_2 + v_2 - (x_2 + v_2) \cdot q_1 \right\rVert}.
+        \end{align*}
+        To show that $\mathcal{R}$ is a retraction for $\mathcal{M}$, we need to show, for the curve $c(t) = R_X(tV)$, that $c(0) = X$ and $c'(0) = V$.\\
+        That is to say, for two curves $q_1(t) = \frac{x_1 + tv_1}{\left\lVert x_1 + tv_1 \right\rVert}$ 
+        and $q_2(t) = \frac{x_2 + tv_2 - (x_2 + tv_2) \cdot q_1(t)}{\left\lVert x_2 + tv_2 - (x_2 + tv_2) \cdot q_1(t) \right\rVert}$, $q_1(0) = x_1, q_2(0) = x_2$ and $q_1'(0) = v_1, q_2'(0) = v_2$.
+        \item[(3)] For $X \in \mathcal{M}$, $\mathcal{R}_X: T_X\mathcal{M} \rightarrow \mathcal{M}$ is not surjective.
+    \end{itemize}
+\end{sol}
+
+\begin{prob} \textbf{Metric projection retraction for Stiefel}\\
+    For $p \leq n$, consider the Stiefel 
+    \begin{equation*}
+        \mathcal{M} = St(n, p) = \{X \in \mathbb{R}^{n \times p}: X^\top X = I_p\}.
+    \end{equation*}
+    \begin{itemize}
+        \item[(1)] Show that $\mathcal{M}$ is an embedded submanifold of $\mathbb{R}^{n \times p}$. 
+        As usual, we endow $\mathbb{R}^{n \times p}$ with the inner product $\langle X, Y \rangle = \tr(X^\top Y)$. 
+        What is the dimension of $\mathcal{M}$? What are the tangent spaces $T_X\mathcal{M}$?
+        \item[(2)] For $(X, V) \in T\mathcal{M}$, let $U \Sigma W^\top$ be a thin SVD of $X + V$ 
+        (i.e., $U \in \mathcal{M}$, $W \in O(p)$ and $\Sigma \in \mathbb{R}^{p \times p}$ is diagonal with positive entries). 
+        Show that $UW^\top$ is the unique metric projection of $X + V$ to $\mathcal{M}$, i.e., $Y = UW^\top$ is the unique solution of
+        \begin{equation*}
+            \min_{Y \in \mathcal{M}} \|X + V - Y\|^2.
+        \end{equation*}
+        For $(X, V) \in T\mathcal{M}$, define $\mathcal{R}_X(V) = UW^\top$.
+        \item[(3)] Show that
+        \begin{equation*}
+            R_X(V) = (X + V)(I_p + V^\top V)^{-1/2}.
+        \end{equation*}
+        \item[(4)] Show that $R$ is a retraction for $\mathcal{M}$, which is known as the polar retraction.
+        \item[(5)] Is $\mathcal{R}_X: T_X\mathcal{M} \rightarrow \mathcal{M}$ surjective?
+    \end{itemize}
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)] Define a map
+        \begin{equation*}
+            h: \mathbb{R}^{n \times p} \to Sym(p), h(X) = X^\top X - I_p,
+        \end{equation*}
+        where $Sym(p) := \{A \in \mathbb{R}^{p \times p}: A = A^\top\}$.\\
+        As $h$ is clearly smooth and $\mathcal{M} = h^{-1}(0)$, we just need to show that $Dh(X)$ has full rank for all $X \in \mathcal{M}$.
+        \begin{equation*}
+            Dh(X)(V) = \frac{d}{dt} h(X + tV)|_{t=0} = V^\top X + X^\top V.
+        \end{equation*}
+        For $W \in Sym(p), V = \frac{1}{2}XW$, we have
+        \begin{equation*}
+            Dh(X)(V) = \frac{1}{2}W^\top X^\top X + \frac{1}{2}X^\top XW = W,
+        \end{equation*}
+        i.e., $Dh(X)$ has full rank for all $X \in \mathcal{M}$.\\
+        Thus, $\mathcal{M}$ is an embedded submanifold of $\mathbb{R}^{n \times p}$, 
+        and $\dim(\mathcal{M}) = \dim(\mathbb{R}^{n \times p}) - \dim(Sym(p)) = np - \frac{p(p+1)}{2} = p(n-\frac{p+1}{2})$.\\
+        Lastly, the tangent space $T_X\mathcal{M}$ is the kernel of $Dh(X)$, i.e., $T_X\mathcal{M} = \{V \in \mathbb{R}^{n \times p}: V^\top X + X^\top V = 0\}$.
+        \item[(2)] As the map $Y \to Y W, W \in O(p)$from $St(n, p)$ to $St(n, p)$ is bijective,
+        \begin{align*}
+            \min_{ Y \in \mathcal{M} } \left\lVert X + V - Y \right\rVert ^2 & = \min\limits_{ Y \in \mathcal{M} } \left\lVert U \Sigma W^{\top} - Y \right\rVert ^2\\
+            & = \min_{ Y \in \mathcal{M} } \left\lVert U \Sigma - Y W \right\rVert ^2\\
+            & = \min_{ Z \in \mathcal{M} } \left\lVert U \Sigma - Z \right\rVert ^2\\
+            & = \min_{ Z \in \mathcal{M} } \left( \sum_{i = 1}^p \left\lVert \sigma_i u_i - z_i \right\rVert ^2 \right)\\
+            & = \min_{ Z \in \mathcal{M} } \left( \sum_{i = 1}^p \sigma_i^2 - 2\sigma_i \left\langle u_i, z_i\right\rangle + 1 \right)\\
+            & \geq \sum_{i = 1}^p (\sigma_i^2 - 2\sigma_i + 1)
+        \end{align*}
+        where the equality holds when $Z = YW = U$, i.e., $Y = UW^\top$
+        \item[(3)] For $V \in T_X\mathcal{M}$,
+        \begin{align*}
+            (I_p + V^\top V)^{-1/2} & =((X + V)^\top(X + V))^{-1/2}\\
+            & = (W \Sigma U^\top U \Sigma W^\top)^{-1/2}\\
+            & = (W \Sigma^2 W^\top)^{-1/2}\\
+            & = W \Sigma^{-1} W^\top\\
+        \end{align*}
+        Then, $(X + V)(I_p + V^\top V)^{-1/2} = U \Sigma W^\top W \Sigma^{-1} W^\top = UW^\top = R_X(V)$.
+        \item[(4)] Define a curve $c(t) = R_X(tV)$, then obviously, $c(0) = X$. We then show that $c'(0) = V$.
+        \begin{equation*}
+            c'(0) = \frac{d}{dt} R_X(tV)|_{t=0} = \frac{d}{dt} (X + tV)(I_p + tV^\top V)^{-1/2}|_{t=0} = V.
+        \end{equation*}
+        Therefore, $R$ is a retraction for $\mathcal{M}$.
+        \item[(5)] For $X \in \mathcal{M}$, $\mathcal{R}_X: T_X\mathcal{M} \rightarrow \mathcal{M}$ is not surjective.
+    \end{itemize}
+\end{sol}
+
+\begin{prob} \textbf{Exponential map on rotations}\\
+    Let $\mathcal{M} = SO(n) = \{X \in \mathbb{R}^{n \times n}: X^\top X = I, \det(X) = 1\}$ be the special orthogonal group.
+    The matrix exponential map $exp: \mathbb{R}^{n \times n} \to \mathbb{R}^{n \times n}$ is the smooth function defined by
+    \begin{equation*}
+        \exp(A) = \sum_{k=0}^\infty \frac{A^k}{k!}, \text{where} A^0 = I.
+    \end{equation*}
+    \begin{itemize}
+        \item[(1)] Show that $\mathcal{M}$ is an embedded submanifold of $\mathbb{R}^{n \times n}$. 
+        What is the dimension of $\mathcal{M}$? What are the tangent spaces $T_X\mathcal{M}$?
+        \item[(2)] Let $\Omega \in \mathbb{R}^{n \times n}$ be skew-symmetric, i.e., $\Omega^\top = -\Omega$. 
+        Show that $\exp(\Omega) \in SO(n)$.
+        \item[(3)] Let $\Omega \in \mathbb{R}^{n \times n}$ be skew-symmetric. Show that $\frac{d}{dt}[exp(t\Omega)]|_{t=0} = \Omega$.
+        \item[(4)] Define $R_X(V) = X \exp(X^\top V)$. Show that $R_X(V) \in \mathcal{M}$ for all $(X, V) \in T\mathcal{M}$.
+        \item[(5)] Show that $R: T\mathcal{M} \to \mathcal{M}$ is a retraction.
+        \item[(6)] For, $X \in \mathcal{M}$, is $\mathcal{R}_X: T_X\mathcal{M} \to \mathcal{M}$ injective?
+    \end{itemize}
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)] Observe that $SO(n) = St(n, n) \cap (\det^{-1}(\{-1\}))^c$, where $St(n, n)$ is the Stiefel manifold.\\
+        Then, $\mathcal{M}$ is an embedded submanifold of $\mathbb{R}^{n \times n}$, because $(\det^{-1}(\{-1\}))^c$ is open.\\
+        Thus, $\dim(\mathcal{M}) = \dim(St(n, n)) = n(n - \frac{n+1}{2}) = \frac{n(n-1)}{2}$.\\
+        Moreover, $\mathcal{M}$ has the same tangent spaces as $St(n, n)$, 
+        i.e., $T_X\mathcal{M} = \{V \in \mathbb{R}^{n \times n}: V^\top X + X^\top V = 0\}$.
+        \item[(2)] For $\Omega \in \mathbb{R}^{n \times n}$, we have
+        \begin{align*}
+            \exp(\Omega)^\top \exp(\Omega) & = \exp(\Omega^\top) \exp(\Omega)\\
+            & = \exp(-\Omega) \exp(\Omega)\\
+            & = \exp(\Omega - \Omega)\\
+            & = \exp(0) = I.
+        \end{align*}
+        And
+        \begin{equation*}
+            \det(\exp(\Omega)) = \exp(\tr(\Omega)) = 1.
+        \end{equation*}
+        Therefore, $\exp(\Omega) \in SO(n)$.
+        \item[(3)] \begin{equation*}
+            \exp(t\Omega) = \sum_{k=0}^\infty \frac{(t\Omega)^k}{k!} = I + t\Omega + \frac{t^2\Omega^2}{2} + \cdots.
+        \end{equation*}
+        Then, 
+        \begin{align*}
+            \frac{d}{dt}[\exp(t\Omega)]|_{t=0} & = \sum_{k=1}^\infty \frac{d}{dt}[\frac{(t\Omega)^k}{k!}]|_{t=0}\\
+            & = \sum_{k=1}^\infty \frac{\Omega^k t^{k-1}}{(k-1)!}|_{t=0}\\
+            & = \Omega.
+        \end{align*}
+        \item[(4)] For $(X, V) \in T\mathcal{M}$, we have $V^\top X + X^\top V = 0$, i.e., $X^\top V$ is skew-symmetric.\\
+        Then, $\exp(X^\top V) \in SO(n)$, and for $R_X(V) = X \exp(X^\top V)$:
+        \begin{align*}
+            R_X(V)^\top R_X(V) & = \exp(X^\top V)^\top X^\top X \exp(X^\top V)\\
+            & = \exp(-X^\top V) \exp(X^\top V)\\
+            & = \exp(X^\top V - X^\top V)\\
+            & = \exp(0) = I.
+        \end{align*}
+        And $\det(R_X(V)) = \det(X) \det(\exp(X^\top V)) = 1$.\\
+        Therefore, $R_X(V) \in \mathcal{M}$ for all $(X, V) \in T\mathcal{M}$.
+        \item[(5)] Define a curve $c(t) = R_X(tV)$, then obviously, $c(0) = X$. We then show that $c'(0) = V$.\\
+        \begin{align*}
+            c'(0) & = \frac{d}{dt} R_X(tV)|_{t=0}\\
+            & = \frac{d}{dt} X \exp(tX^\top V)|_{t=0}\\
+            & = X \frac{d}{dt} \exp(tX^\top V)|_{t=0}\\
+            & = X X^\top V = V.
+        \end{align*}
+        As $R_X(V)$ is smooth, $R$ is a retraction for $\mathcal{M}$.
+        \item[(6)] For $X \in \mathcal{M}$, $\mathcal{R}_X: T_X\mathcal{M} \to \mathcal{M}$ is not injective.
+    \end{itemize}
+\end{sol}
+\end{document}

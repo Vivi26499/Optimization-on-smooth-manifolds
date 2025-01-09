@@ -1,0 +1,5 @@
+PWD c:/Users/Vivi/OneDrive/Projects/Optimization on smooth manifolds/exer5
+INPUT c:/texlive/2024/texmf.cnf
+INPUT c:/texlive/2024/texmf-dist/web2c/texmf.cnf
+INPUT c:/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT exer5.tex

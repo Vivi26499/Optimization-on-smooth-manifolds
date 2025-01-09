@@ -1,0 +1,184 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 5}{Due date: }{Vivi}[https://github.com/Vivi26499]{24S153073}
+
+\begin{document}
+
+\begin{prob} \textbf{RGD on product of spheres}\\
+    Let $\mathcal{M}  = \mathbb{S} ^{m-1} \times \mathbb{S} ^{n-1}$, 
+    which is an embedded submanifold of $\mathcal{E} = \mathbb{R} ^m \times \mathbb{R} ^n$ with its usual Euclidean structure.\\
+    We turn $\mathcal{M}$ into a Riemannian manifold by using the Euclidean structure of the ambient space $\mathcal{E} = \mathbb{R} ^m \times \mathbb{R} ^n$.\\
+    Let $M \in \mathbb{R} ^{m \times n}$ and
+    \begin{equation*}
+        f: \mathcal{M} \to \mathbb{R}, \quad f(x, y) = x ^\top M y.
+    \end{equation*}
+    \begin{itemize}
+        \item[(1)] Show that $\max\limits_{(x, y) \in \mathcal{M}} f(x, y) = \sigma _1 (M)$, where $\sigma _1 (M)$ is the largest singular value of $M$.
+        \item[(2)] Characterize the critical points of $f$ on $\mathcal{M}$, and relate them to the eigenvectors of $M ^\top M$ and $MM ^\top$.
+        \item[(3)] Propose a retraction for $\mathcal{M}$.
+        \item[(4)] Write down the RGD algorithm for $-f$ on $\mathcal{M}$.
+        \item[(5)] Write code of the algorithm.
+    \end{itemize}
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)] For $(x, y) \in \mathcal{M}$, we have
+        \begin{align*}
+            x ^\top M y & \leq \left\lVert x ^\top M y \right\rVert _2\\
+            & \leq \left\lVert x \right\rVert _2 \cdot \left\lVert M \right\rVert _2 \cdot \left\lVert y \right\rVert _2\\
+            & = \sigma _1 (M)
+        \end{align*}
+        When $x, y$ are the singular vectors corresponding to $\sigma _1 (M), x ^\top M y = \sigma _1 (M)$.
+        \item[(2)] For $(x, y) \in \mathcal{M}$, we have
+        \begin{equation*}
+            gradf(x, y) = ((I - xx^{\top})M y, (I - yy^{\top})M^{\top} x).
+        \end{equation*}
+        If $gradf(x, y) = 0$, then
+        \begin{align*}
+            M y & = (x ^\top M y) x\\
+            M ^\top x & = (x ^\top M y) y
+        \end{align*}
+        Hence, 
+        \begin{align*}
+            M ^\top M y & = (x ^\top M y) M^\top x = (x ^\top M y) ^2 y\\
+            M M ^\top x & = (x ^\top M y) M y = (x ^\top M y) ^2 x
+        \end{align*}
+        which means that $x$ is an eigenvector of $M M^\top$ and $y$ is an eigenvector of $M ^\top M$, corresponding to the eigenvalue $(x ^\top M y) ^2$.
+        \item[(3)] The retraction for $\mathcal{M}$ can be
+        \begin{equation*}
+            R: T \mathcal{M} \to \mathcal{M}, \quad R _{(x, y)} (v, w) = 
+            (\frac{x+v}{\left\lVert x+v \right\rVert _2}, \frac{y+w}{\left\lVert y+w \right\rVert _2}).
+        \end{equation*}
+    \end{itemize}
+\end{sol}
+
+\begin{prob} \textbf{RGD on Stiefel}
+    For $p \leq n$, consider the Stiefel manifold
+    \begin{equation*}
+        \mathcal{M} = St(n, p) = \{X \in \mathbb{R} ^{n \times p} : X ^\top X = I_p\}.
+    \end{equation*}
+    We endow $\mathcal{M}$ with the inner product $\langle X, Y \rangle = \tr (X ^\top Y)$. Let
+    \begin{equation*}
+        f: \mathcal{M} \to \mathbb{R}, \quad f(X) = \tr (X ^\top A X),
+    \end{equation*}
+    where $A$ is a real symmetric $n \times n$ matrix.
+    \begin{itemize}
+        \item[(1)] Compute the orthogonal projector $Proj _X: \mathcal{E} \to T _X \mathcal{M}$.
+        \item[(2)] Given $X \in \mathcal{M}$ and $U \in \mathcal{E}$, give its time complexity to compute $Proj _X (U)$.
+        \item[(3)] Give an expression of the Riemannian gradient $gradf(X)$.
+    \end{itemize}
+    We want to solve
+    \begin{equation*}
+        \min _{X \in \mathcal{M}} f(X),
+    \end{equation*}
+    which amounts to identifying a left invariant subspace of $A$.
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)] For $X \in \mathcal{M}$, we have
+        \begin{equation*}
+            T_X \mathcal{M} = \{V \in \mathbb{R} ^{n \times p} : X ^\top V + V ^\top X = 0\}, 
+            \quad N_X \mathcal{M} = \{ X A: A \in Sym(p) \}.
+        \end{equation*}
+        Hence, for $U \in \mathbb{R} ^{n \times p}$, we have $Proj _X (U) \in T _X \mathcal{M}$ and $U - Proj _X (U) \in N _X \mathcal{M}$, we have
+        \begin{align*}
+            Proj_X (U) ^\top X + X ^\top Proj_X (U) & = (U - X A) ^\top X + X ^\top (U - X A)\\
+            & = U ^\top X - A ^\top X ^\top X + X ^\top U - X ^\top X A\\
+            & = U ^\top X + X ^\top U - 2 A\\
+            & = 0
+        \end{align*}
+        that is, $A = \frac{U ^\top X + X ^\top U}{2}$, therefore $Proj _X (U) = U - X A = U - X \frac{U ^\top X + X ^\top U}{2}$.
+        \item[(2)] The time complexity to compute $Proj _X (U)$ is $O(np ^2)$.
+        \item[(3)] $f$ can be smoothly extended by 
+        \begin{equation*}
+            \bar{f}: \mathbb{R} ^{n \times p} \to \mathbb{R}, \quad \bar{f}(X) = \tr (X ^\top A X).
+        \end{equation*}
+        The gradient of $\bar{f}$, $grad \bar{f}(X) = 2 A X$. Hence, the Riemannian gradient of $f$ is
+        \begin{align*}
+            gradf(X) & = Proj _X (grad \bar{f}(X))\\
+            & = Proj _X (2 A X)\\
+            & = 2 Proj _X (A X)\\
+            & = 2 (A X - X \frac{X ^\top A X + X ^\top A X}{2})\\
+            & = 2 (A X - X X ^\top A X)\\
+        \end{align*}
+    \end{itemize}
+\end{sol}
+
+\begin{prob} \textbf{PL-condition, sufficient decrease and linear convergence}\\
+    Let $\mathcal{M}$ be a Riemannian manifold and $f: \mathcal{M} \to \mathbb{R}$ be a smooth function sutisfying the PL-condition:
+    \begin{equation*}
+        \exists \mu > 0 s.t. \norm{gradf(x)} _x ^2 \geq 2 \mu (f(x) - f ^*), \quad \forall x \in \mathcal{M},
+    \end{equation*}
+    where $f ^* = \min _{x \in \mathcal{M}} f(x)$.\\
+    Consider an iterative algorithm $\mathcal{A}$ with iterates $\{x_k\}$ satisfying the sufficient decrease condition:
+    \begin{equation*}
+        \exists c > 0 s.t. f(x_{k+1}) - f(x_k) \leq -c \norm{gradf(x_k)} _{x_k} ^2, \quad \forall k = 0, 1, 2, \cdots
+    \end{equation*}
+    Backtracking line-search satisfies sufficient decrease( assuming Lipschitz conditions on $f$)
+    \begin{itemize}
+        \item[(1)] Show that algorithm $\mathcal{A}$ converges at a linear rate:
+        \begin{equation*}
+            f(x_{k+1}) - f ^* \leq (1 - 2 \mu c) (f(x_k) - f ^*), \quad \forall k = 0, 1, 2, \cdots
+        \end{equation*}
+        \item[(2)] Show that if $f: \mathcal{M} \to \mathbb{R}$ satisfies the PL-condition, then all critical points of $f$ are global minimizers.
+        \item[(3)] If $\mathcal{M}$ is a sphere, can a non constant function $f: \mathcal{M} \to \mathbb{R}$ satisfy the PL-condition? 
+        What about if $\mathcal{M}$ is a compact Riemannian manifold ?
+        \item[(4)] Let $\mathcal{M} = \mathbb{R} ^d$ endowed with the standard inner product ($\mathcal{M}$ is a Euclidean space). 
+        Show that if $f$ is differentiable and $\mu$-strongly convex, i.e.,
+        \begin{equation*}
+            f(y) \geq f(x) + \left\langle gradf(x), y - x \right\rangle + \frac{\mu}{2} \norm{y - x} _2 ^2, \quad \forall x, y \in \mathcal{M},
+        \end{equation*}
+        then $f$ satisfies the PL-condition with $\mu$.
+
+    \end{itemize}
+\end{prob}
+
+\begin{sol}
+    \begin{itemize}
+        \item[(1)] We have
+        \begin{align*}
+            2 \mu c (f(x_k) - f ^*) & \leq c \norm{gradf(x_k)} _{x_k} ^2\\
+            & \leq f(x_k) - f(x_{k+1})\\
+            & = (f(x_k) - f ^*) - (f(x_{k+1}) - f ^*)\\
+        \end{align*}
+        which means that
+        \begin{equation*}
+            f(x_{k+1}) - f ^* \leq (1 - 2 \mu c) (f(x_k) - f ^*).
+        \end{equation*}
+        \item[(2)] If $x \in \mathcal{M}$ is a critical point of $f$, then $gradf(x) = 0$. By the PL-condition, we have
+        \begin{equation*}
+            0 \geq 2 \mu (f(x) - f ^*),
+        \end{equation*}
+        which means that $f(x) = f ^*$.
+        \item[(3)] Suppose that $f: \mathcal{M} \to \mathbb{R}$ satisfies the PL-condition. 
+        Then, for $x_{max} \in \text{argmax} _{x \in \mathcal{M}} f(x)$, we have
+        \begin{equation*}
+            0 \geq 2 \mu (f(x_{max}) - f ^*),
+        \end{equation*}
+        which means that $f(x_{max}) = f ^*$. Hence, $f$ is constant.
+        \item[(4)] Fix $x \in \mathcal{M}$, we define 
+        \begin{equation*}
+            g(y) = f(x) + \left\langle gradf(x), y - x \right\rangle + \frac{\mu}{2} \norm{y - x} _2 ^2.
+        \end{equation*}
+        Then, we have
+        \begin{equation*}
+            Dg(y)[v] = \left\langle gradf(x) + \mu (y - x), v \right\rangle, \quad v \in \mathbb{R} ^d.
+        \end{equation*}
+        The only critical point of $g$ is $y ^* = x - \frac{1}{\mu} gradf(x)$. Hence
+        \begin{equation*}
+            f(y) \geq f(x) + \left\langle gradf(x), y - x \right\rangle + \frac{\mu}{2} \norm{y - x} _2 ^2 \geq 
+            f(y ^*) = f(x) - \frac{1}{2 \mu} \norm{gradf(x)} _2 ^2.
+        \end{equation*}
+        That means
+        \begin{equation*}
+            \norm{gradf(x)} _2 ^2 \geq 2 \mu (f(x) - f(y)), \quad \forall x, y \in \mathcal{M}.
+        \end{equation*}
+        In particular, for $y = \text{argmin} _{x \in \mathcal{M}} f(x)$, we have
+        \begin{equation*}
+            \norm{gradf(x)} _2 ^2 \geq 2 \mu (f(x) - f ^*), \quad \forall x \in \mathcal{M}.
+        \end{equation*}
+    \end{itemize}
+\end{sol}
+\end{document}

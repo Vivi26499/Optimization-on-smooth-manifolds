@@ -1,0 +1,230 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 6}{Due date: }{Vivi}[https://github.com/Vivi26499]{24S153073}
+
+\usepackage{enumitem} % 用于自定义 enumerate 样式
+
+\begin{document}
+
+\begin{prob} \textbf{Riemannian connection on the sphere}\\
+    For a smooth manifold $\mathcal{M}$, 
+    let $\mathfrak{F} (\mathcal{M})$ denote the vector space of smooth real-valued functions on $\mathcal{M}$ 
+    and $\mathfrak{X} (\mathcal{M})$ denote the vector space of smooth vector fields on $\mathcal{M}$.\\
+    Let $\mathcal{M} = \mathbb{S}^{d-1}$ be embedded in $\mathcal{E} = \mathbb{R}^d$. 
+    Let $\text{Proj} _x$ denote the orthogonal projector from $\mathcal{E}$ to $T_x \mathcal{M}$.
+    Defeine a map $\nabla$ as follows: for all $(x, u) \in T\mathcal{M}$ and $V \in \mathfrak{X} (\mathcal{M})$,
+    \begin{equation*}
+        \nabla _u V = \text{Proj} _x \left( D \bar{V} (x) [u] \right),
+    \end{equation*}
+    where $\bar{V}$ is any smooth extension of $V$.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that $\nabla$ satisfies the Smoothness property of connections.\\
+        \textit{Hint:} Use the fact that if $U, V \in \mathfrak{X} (\mathcal{M})$ 
+        with smooth extensions $\bar{U}, \bar{V}$ defined on some open set $\mathcal{M} \subseteq \mathcal{U} \subseteq \mathcal{E}$, 
+        then $D \bar{V} (x) [ \bar{U} (x) ]$ is smooth.
+        \item Show that $\nabla$ satisfies the "Linearity in $u$" property of connections.
+        \item Show that $\nabla$ satisfies the "Linearity in $V$" property of connections.
+        \item Show that $\nabla$ satisfies the "Leibniz rule" property of connections.
+        \item Conclude that $\nabla$ is a connection on $\mathcal{M}$.
+        \item Show that $\nabla$ satisfies the "Compatibility with the metric" property of Riemannian connections.
+        \item Show that $\nabla$ satisfies the "Symmetry" property of Riemannian connections in following steps:
+        \begin{enumerate}[label=(\alph*)]
+            \item Show that if $\bar{U}$ and $\bar{f}$ are smooth extensions of $U$ and $f$ respectively, then $\bar{U} \bar{f}$ is a smooth extension of $U f$.\\
+            Conclude that
+            \begin{equation*}
+                \overline{[U, V] f} := \bar{U} (\bar{V} \bar{f}) - \bar{V} (\bar{U} \bar{f})
+            \end{equation*}
+            is a smooth extension of $[U, V] f$.
+            \item Using symmetry of the "Euclidean" Hessian, show that
+            \begin{equation*}
+                (\overline{[U, V]f}) (x) = D \bar{f} (x) \left[ D \bar{V} (x) [\bar{U} (x)] - D \bar{U} (x) [\bar{V} (x)] \right]
+            \end{equation*}
+            \item Show that $D \bar{V} (x) [\bar{U} (x)] - D \bar{U} (x) [\bar{V} (x)]$ is tangent to $\mathcal{M}$ at $x$.
+            \item Show that $\nabla$ satisfies the "Symmetry" property of Riemannian connections.
+            \item Conclude that $\nabla$ is a Riemannian connection on $\mathcal{M}$.
+        \end{enumerate}
+        \item Give an expression for the Riemannian Hessian of $f: \mathcal{M} \to \mathbb{R}$ 
+        in terms of the Euclidean gradient and Hessian of a smooth extension $\bar{f}$ of $f$.
+    \end{enumerate}
+
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item As $\mathcal{M} = \mathbb{S}^{d-1}$, we have $\text{Proj} _x (u)= (I_d - x x^\top) u$. 
+        Thus for $U, V \in \mathfrak{X} (\mathcal{M})$ 
+        with smooth extensions $\bar{U}, \bar{V}$ defined on some open set $\mathcal{M} \subseteq \mathcal{U} \subseteq \mathcal{E}$,
+        \begin{align*}
+            \nabla _U V (x)&= \text{Proj} _x \left( D \bar{V}(x) [U(x)] \right)\\
+            &= \text{Proj} _x \left( D \bar{V} (x) [\bar{U}(x)] \right)\\
+            &= (I_d - x x^\top) D \bar{V} (x) [\bar{U}(x)]
+        \end{align*}
+        is a smooth extension of $\nabla _U V$. Thus $\nabla$ satisfies the Smoothness property of connections.
+        
+        \item For $V \in \mathfrak{X} (\mathcal{M})$ and $u, w \in T _x \mathcal{M}$ and $a, b \in \mathbb{R}$, we have
+        \begin{align*}
+            \nabla _{a u + b w} V (x)&= \text{Proj} _x \left( D \bar{V} (x) [(a u + b w)] \right)\\
+            &= \text{Proj} _x \left( a D \bar{V} (x) [u] + b D \bar{V} (x) [w] \right)\\
+            &= a \text{Proj} _x \left( D \bar{V} (x) [u] \right) + b \text{Proj} _x \left( D \bar{V} (x) [w] \right)\\
+            &= a \nabla _u V (x) + b \nabla _w V (x)
+        \end{align*}
+        due to the linearity of the differential and the projection.
+        \item For $W, V \in \mathfrak{X} (\mathcal{M})$ and $u \in T _x \mathcal{M}$ and $a, b \in \mathbb{R}$, we have
+        \begin{align*}
+            \nabla _u (a V + b W) (x)&= \text{Proj} _x \left( D (\overline{a V + b W}) (x) [u] \right)\\
+            &= \text{Proj} _x \left( a D \bar{V} (x) [u] + b D \bar{W} (x) [u] \right)\\
+            &= a \text{Proj} _x \left( D \bar{V} (x) [u] \right) + b \text{Proj} _x \left( D \bar{W} (x) [u] \right)\\
+            &= a \nabla _u V (x) + b \nabla _u W (x)
+        \end{align*}
+        due to the linearity of the differential and the projection.
+        \item For $V \in \mathfrak{X} (\mathcal{M})$ and $f \in \mathfrak{F} (\mathcal{M})$ and $u \in T _x \mathcal{M}$, we have
+        \begin{align*}
+            \nabla _u (f V) (x)&= \text{Proj} _x \left( D (\overline{f V}) (x) [u] \right)\\
+            &= \text{Proj} _x \left( D (\bar{f} \bar{V}) (x) [u] \right)\\
+            &= \text{Proj} _x \left( D \bar{f} (x) [u] \bar{V} (x) + \bar{f} (x) D \bar{V} (x) [u] \right)\\
+            &= D \bar{f} (x) [u] \text{Proj} _x \left( \bar{V} (x) \right) + \bar{f} (x) \text{Proj} _x \left( D \bar{V} (x) [u] \right)\\
+            &= D \bar{f} (x) [u] V (x) + f(x) \nabla _u V (x)
+        \end{align*}
+        \item As $\nabla$ satisfies all the properties of connections, we conclude that $\nabla$ is a connection on $\mathcal{M}$.
+        \begin{equation*}
+            \nabla: T \mathcal{M} \times \mathfrak{X} (\mathcal{M}) \to T \mathcal{M} \quad (u, V) \mapsto \text{Proj} _x \left( D \bar{V} (x) [u] \right)
+        \end{equation*}
+        \item For $U, V, W \in \mathfrak{X} (\mathcal{M})$, we have
+        \begin{align*}
+            U \langle V, W \rangle &= \bar{U} \langle \bar{V}, \bar{W} \rangle | _\mathcal{M}\\
+            &= \left( \langle \nabla _{\bar{U}} \bar{V}, \bar{W} \rangle + \langle \bar{V}, \nabla _{\bar{U}} \bar{W} \rangle \right) | _\mathcal{M}.
+        \end{align*}
+        For $x \in \mathcal{M}$, we have
+        \begin{align*}
+            \langle \nabla _{\bar{U}} \bar{V}, \bar{W} \rangle (x) &= \langle (\nabla _{\bar{U}} \bar{V})(x), \text{Proj} _x (W(x)) \rangle\\
+            &= \langle \text{Proj} _x \left( (\nabla _{\bar{U}}\bar{V}) (x)\right), W(x) \rangle _x\\
+            &= \langle \nabla _U V, W \rangle (x)\\
+        \end{align*}
+        Similarly, we have $\langle \bar{V}, \nabla _{\bar{U}} \bar{W} \rangle (x) = \langle V, \nabla _U W \rangle (x)$.\\
+        Thus, we have
+        \begin{equation*}
+            U \langle V, W \rangle = \langle \nabla _U V, W \rangle + \langle V, \nabla _U W \rangle.
+        \end{equation*}
+        \item 
+        \begin{enumerate}[label=(\alph*)]
+            \item Let $\bar{U}$ and $\bar{f}$ be smooth extensions of $U$ and $f$ on some open set $\mathcal{M} \subseteq \mathcal{U} \subseteq \mathcal{E}$.
+            For $x \in \mathcal{M}$, we have
+            \begin{align*}
+                (U f) (x) &= D f (x) [U(x)]\\
+                &= D \bar{f} (x) [\bar{U} (x)] | _\mathcal{M}\\
+                &= (\bar{U} \bar{f}) (x) | _\mathcal{M}
+            \end{align*}
+            and for $\bar{V}$ a smooth extension of $V \in \mathcal{x} (\mathcal{M})$, we have
+            \begin{align*}
+                U (V f) (x) - V (U f) &= \bar{U} (\bar{V} \bar{f}) (x) - \bar{V} (\bar{U} \bar{f}) (x)\\
+                &= \overline{[U, V] f} (x)
+            \end{align*}
+            \item Let $\bar{U}, \bar{V}$ be smooth extensions of $U, V \in \mathfrak{X} (\mathcal{M})$ 
+            and $\bar{f}$ be a smooth extension of $f \in \mathfrak{F} (\mathcal{M})$ on some open set $\mathcal{M} \subseteq \mathcal{U} \subseteq \mathcal{E}$.\\
+            For $x \in \mathcal{U}$, as in the Euclidean space, we have
+            \begin{align*}
+                \bar{U} (\bar{V} \bar{f}) (x) &= \bar{U} (D \bar{f} (x) [\bar{V} (x)]) (x)\\
+                &= \bar{U} \langle grad \bar{f} (x), \bar{V} (x) \rangle (x)\\
+                &= D \langle grad \bar{f}, \bar{V} \rangle (x) [\bar{U} (x)]\\
+                &= \langle D (grad \bar{f}) (x) [\bar{U} (x)], \bar{V} (x) \rangle + \langle grad \bar{f} (x), D \bar{V} (x) [\bar{U} (x)] \rangle\\
+                &= \langle Hess \bar{f} (x) [\bar{U} (x)], \bar{V} (x) \rangle + D \bar{f} (x) [D \bar{V} (x) [\bar{U} (x)]]
+            \end{align*}
+            Similarly,
+            \begin{equation*}
+                \bar{V} (\bar{U} \bar{f}) (x) = \langle Hess \bar{f} (x) [\bar{V} (x)], \bar{U} (x) \rangle + D \bar{f} (x) [D \bar{U} (x) [\bar{V} (x)]]
+            \end{equation*}
+            Thus we have
+            \begin{align*}
+                (\overline{[U, V] f}) (x) &= \bar{U} (\bar{V} \bar{f}) (x) - \bar{V} (\bar{U} \bar{f}) (x)\\
+                &= \langle Hess \bar{f} (x) [\bar{U} (x)], \bar{V} (x) \rangle + D \bar{f} (x) [D \bar{V} (x) [\bar{U} (x)]]\\
+                &- \langle Hess \bar{f} (x) [\bar{V} (x)], \bar{U} (x) \rangle + D \bar{f} (x) [D \bar{U} (x) [\bar{V} (x)]]\\
+                &= D \bar{f} (x) \left[D \bar{V} (x) [\bar{U} (x)] - D \bar{U} (x) [\bar{V} (x)]\right]
+            \end{align*}
+            \item Let $\bar{f} (x) = x ^\top x - 1$ be a smooth extension of the local defining function $f$.
+            For $x \in \mathcal{M}$ and $V, W \in \mathcal{X} (\mathcal{M})$, we have
+            \begin{align*}
+                \bar{V} \bar{f} (x) &= D \bar{f} (x) [\bar{V} (x)]\\
+                &= D f (x) [V(x)]\\
+                &= 0
+            \end{align*}
+            Thus,
+            \begin{align*}
+                \bar{U} (\bar{V} \bar{f}) (x) &= D (\bar{V} \bar{f}) (x) [\bar{U} (x)]\\
+                &= D (V f) (x) [U(x)]\\
+                &= 0.
+            \end{align*}
+            Similiarly, we have $\bar{V} (\bar{U} \bar{f}) (x) = 0$.\\
+            Thus,
+            \begin{equation*}
+                \overline{[U, V] f} (x) = \bar{U} (\bar{V} \bar{f}) (x) - \bar{V} (\bar{U} \bar{f}) (x) = 0
+            \end{equation*}
+            which means $\overline{[U, V]}\in \ker (f(x)) = T _x \mathcal{M}$.
+            \item Let $\bar{U}, \bar{V}$ be smooth extensions of $U, V \in \mathfrak{X} (\mathcal{M})$ 
+            on some open set $\mathcal{M} \subseteq \mathcal{U} \subseteq \mathcal{E}$, and $f \in \mathfrak{F} (\mathcal{M})$.
+            \begin{align*}
+                (\nabla _U V - \nabla _V U) &= \text{Proj} _x \left( D \bar{V} (x) [U (x)] \right) - \text{Proj} _x \left( D \bar{U} (x) [V (x)] \right)\\
+                &= \text{Proj} _x \left( D \bar{V} (x) [\bar{U} (x)] \right) - \text{Proj} _x \left( D \bar{U} (x) [\bar{V} (x)] \right)\\
+                &= D \bar{V} (x) [\bar{U} (x)] - D \bar{U} (x) [\bar{V} (x)]
+            \end{align*}
+            and we have
+            \begin{align*}
+                [U, V] f (x) &= \overline{[U, V] f} (x)\\
+                &= D \bar{f} (x) \left[ D \bar{V} (x) [\bar{U} (x)] - D \bar{U} (x) [\bar{V} (x)] \right]\\
+                &= D f (x) \left[ (\nabla _U V - \nabla _V U) (x) \right]\\
+                &= (\nabla _U V - \nabla _V U) f (x)
+            \end{align*}
+            which means $ [U, V] f = (\nabla _U V - \nabla _V U) f$.
+            \item As $\nabla$ satisfies all the properties of Riemannian connections, we conclude that $\nabla$ is a Riemannian connection on $\mathcal{M}$.
+        \end{enumerate}
+        \item For $(x, u) \in T \mathcal{M}$
+        \begin{align*}
+            \text{Hess} f (x) [u] &= (\nabla _u \text{grad} f) (x)\\
+            &= \text{Proj} _x \left( D \overline{\text{grad}} f (x) [u] \right)\\
+            &= \text{Proj} _x \left( D (\text{grad} \bar{f} (x) - \langle x, \text{grad} \bar{f} (x) \rangle x) [u] \right)\\
+            &= \text{Proj} _x \left( \text{Hess} \bar{f} (x) [u] - \left[ \langle u, \text{grad} \bar{f} (x) \rangle + 
+            \langle x, \text{Hess} \bar{f} (x) [u] \rangle \right] x - \langle x, \text{grad} \bar{f} (x) \rangle u \right)\\
+            &= \text{Proj} _x \left( \text{Hess} \bar{f} (x) [u] \right) - \langle x, \text{grad} \bar{f} (x) \rangle u\\
+        \end{align*}
+    \end{enumerate}
+\end{sol}
+
+\begin{prob} \textbf{The Lie bracket is nonzero} \\
+    For $\mathcal{M} = \mathbb{R} ^2$, consider the vector fields $U(x) = (1, 0), V(x) = (0, x_1 x_2)$, and the function $f(x) = x_2$.
+    Show that $[U, V] f = f$.
+\end{prob}
+
+\begin{sol}
+    For $x = (x_1, x_2) \in \mathbb{R} ^2$, we have
+    \begin{align*}
+        U f (x) &= D f (x) [U(x)]\\
+        &= D f (x) [(1, 0)]\\
+        &= 0,
+    \end{align*}
+    and
+    \begin{align*}
+        V f (x) &= D f (x) [V(x)]\\
+        &= D f (x) [(0, x_1 x_2)]\\
+        &= x_1 x_2.
+    \end{align*}
+    Then
+    \begin{align*}
+        U (V f) (x) &= D (V f) (x) [U(x)]\\
+        &= D (x_1 x_2) [(1, 0)]\\
+        &= x_2,
+    \end{align*}
+    and
+    \begin{align*}
+        V (U f) (x) &= D (U f) (x) [V(x)]\\
+        &= D (0) [(0, x_1 x_2)]\\
+        &= 0.
+    \end{align*}
+    Thus
+    \begin{align*}
+        [U, V] f (x) &= U (V f) (x) - V (U f) (x)\\
+        &= x_2 - 0\\
+        &= x_2\\
+        &= f(x).
+    \end{align*}
+    Therefore, $[U, V] f = f$.
+\end{sol}
+\end{document}

@@ -1,0 +1,189 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 10}{Due date: }{Vivi}[https://github.com/Vivi26499]{24S153073}
+
+\begin{document}
+\begin{prob} \textbf{Properties of parallel transport}\\
+    Let $\mathcal{M}$ be a smooth manifold. Let PT denote the parallel transport with respect to a connection $\nabla$.
+    Let $c: I \rightarrow \mathcal{M}$ be a smooth curve, and $t_0, t_1 \in I$ with $I \subseteq \mathbb{R}$ an open interval.\\
+    The linear map $\mathbf{P} \mathbf{T}^c_{t_1 \leftarrow t_0}: T_{c(t_0)} \mathcal{M} \rightarrow T_{c(t_1)} \mathcal{M}$ is always invertible.\\
+    We endow $\mathcal{M}$ with a Riemannian metric $\langle \cdot, \cdot \rangle$, 
+    and let $\mathbf{P} \mathbf{T}$ denote the parallel transport with respect to the Riemannian connection $\nabla$.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that the linear map $\mathbf{P} \mathbf{T}^c_{t_1 \leftarrow t_0}: T_{c(t_0)} \mathcal{M} \rightarrow T_{c(t_1)} \mathcal{M}$ is an isometry,
+        that is
+        \begin{equation*}
+            \langle u, v \rangle_{c(t_0)} \rangle = 
+            \langle \mathbf{P} \mathbf{T}^c_{t_1 \leftarrow t_0} (u), \mathbf{P} \mathbf{T}^c_{t_1 \leftarrow t_0} (v) \rangle _{c(t_1)}
+            \quad \forall u, v \in T_{c(t_0)} \mathcal{M}.
+        \end{equation*}
+        \item Let $c: I \rightarrow \mathcal{M}$ be a geodesic of $\mathcal{M}$. 
+        Show that the velocity $c'(t)$, for $t \in I$, defines a parallel vector field along $c$.
+        \item What can be said about $\mathbf{P} \mathbf{T}^c_{t \leftarrow 0}$ when
+        \begin{enumerate}[label=(\alph*)]
+            \item $v = \alpha c'(0)$ for some $\alpha \in \mathbb{R}$?
+            \item $v$ is orthogonal to $c'(0)$?
+        \end{enumerate}
+    \end{enumerate}
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Let $Z_1, Z_2 \in \mathfrak{X} (c)$ be the unique parallel vector fields along $c$ such that $Z_1(t_0) = u$ and $Z_2(t_0) = v$,
+        Then for any $t \in I$, $\frac{D}{dt} Z_1 = 0$ and $\frac{D}{dt} Z_2 = 0$. We definite
+        \begin{equation*}
+            g(t) = \langle Z_1(t), Z_2(t) \rangle _{c(t)},
+        \end{equation*}
+        whose derivative is
+        \begin{align*}
+            \frac{d}{dt} g(t) &= \frac{d}{dt} \langle Z_1(t), Z_2(t) \rangle _{c(t)}\\
+            &= \langle \frac{D}{dt} Z_1(t), Z_2(t) \rangle _{c(t)} + \langle Z_1(t), \frac{D}{dt} Z_2(t) \rangle _{c(t)}\\
+            &= 0,
+        \end{align*}
+        which implies that $g(t)$ is a constant function. Therefore, we have
+        \begin{equation*}
+            \langle u, v \rangle _{c(t_0)} = \langle Z_1(t_0), Z_2(t_0) \rangle _{c(t_0)} = \langle Z_1(t_1), Z_2(t_1) \rangle _{c(t_1)} 
+            = \langle \mathbf{P} \mathbf{T}^c_{t_1 \leftarrow t_0} (u), \mathbf{P} \mathbf{T}^c_{t_1 \leftarrow t_0} (v) \rangle _{c(t_1)}.
+        \end{equation*}
+        \item Since $c$ is a geodesic, we have $c''(t) = \frac{D}{dt} c'(t) = 0$. Therefore, $c'(t)$ is a parallel vector field along $c$.
+        \item 
+        \begin{enumerate}[label=(\alph*)]
+            \item Since $c'(t)$ is a parallel vector field along $c$, thus there exists a unique parallel vector field $c'(t)$ along $c$ such that $c'(0) = v$.\\
+            Then by linearity, we have
+            \begin{equation*}
+                \mathbf{P} \mathbf{T}^c_{t \leftarrow 0} (v) = \mathbf{P} \mathbf{T}^c_{t \leftarrow 0} (\alpha c'(0)) = \alpha \mathbf{P} \mathbf{T}^c_{t \leftarrow 0} (c'(0)) = \alpha c'(t).
+            \end{equation*}
+            \item Since $v$ is orthogonal to $c'(0)$, we have $\langle v, c'(0) \rangle _{c(0)} = 0$.\\
+            Then because $\mathbf{P} \mathbf{T}^c_{t \leftarrow 0}$ is an isometry, we have
+            \begin{equation*}
+                \langle \mathbf{P} \mathbf{T}^c_{t \leftarrow 0} (v), c'(t) \rangle _{c(t)} = \langle v, c'(0) \rangle _{c(0)} = 0,
+            \end{equation*}
+            which implies that $\mathbf{P} \mathbf{T}^c_{t \leftarrow 0} (v)$ is orthogonal to $c'(t)$.
+        \end{enumerate}
+    \end{enumerate}
+\end{sol}
+
+\begin{prob} \textbf{Parallel transport on the sphere}\\
+    The curve $c: \mathbb{R} \rightarrow \mathbb{S}^{d-1}$ given by
+    \begin{equation*}
+        c(t) = \cos(t) x + \sin(t) v
+    \end{equation*}
+    with $(x, v) \in \mathbf{T} \mathbb{S}^{d-1}$ and $\norm{v} = 1$, is a geodesic of the sphere, 
+    when the sphere is seen as a Riemannian submanifold with the Riemannian connection.\\
+    Derive an expression for the parallel transport $\mathbf{P} \mathbf{T}^c_{t \leftarrow 0}$ of a tangent vector $u \in T_{c(0)} \mathbb{S}^{d-1}$ along $c$.
+\end{prob}
+
+\begin{sol}
+    Using the result from Problem 1, we decompose $u$ as $u = \langle u, v \rangle v + \sum_{i=1}^{d-2} \langle u, e_i \rangle e_i$, where $\{v, e_1, \cdots, e_{d-2}\}$ is an orthonormal basis of $T_{c(0)} \mathbb{S}^{d-1}$.\\
+    As $e_i \in T_{c(0)} \mathbb{S}^{d-1}$, we have $\langle e_i, x \rangle = 0$ and $\langle e_i, v \rangle = 0$, 
+    which implies that
+    \begin{align*}
+        \langle e_i, c(t) \rangle &= \cos(t) \langle e_i, x \rangle + \sin(t) \langle e_i, v \rangle = 0,\\
+        \langle e_i, c'(t) \rangle &= -\sin(t) \langle e_i, x \rangle + \cos(t) \langle e_i, v \rangle = 0,
+    \end{align*}
+    for all $t \in \mathbb{R}$.\\
+    Therefore, $e_i \in T_{c(t)} \mathbb{S}^{d-1}$ for all $t \in \mathbb{R}$, and $\frac{D}{dt} e_i = 0$, which implies that $\mathbf{P} \mathbf{T}^c_{t \leftarrow 0} e_i = e_i$.\\
+    For $v$, as $v = c'(0)$, we have $\mathbf{P} \mathbf{T}^c_{t \leftarrow 0} v = c'(t)$.\\
+    Therefore, we have
+    \begin{equation*}
+        \mathbf{P} \mathbf{T}^c_{t \leftarrow 0} u = \langle u, v \rangle c'(t) + \sum_{i=1}^{d-2} \langle u, e_i \rangle e_i.
+    \end{equation*}
+    Particularly, when $d = 2$, we have $u = \langle u, v \rangle v$, and
+    \begin{equation*}
+        \mathbf{P} \mathbf{T}^c_{t \leftarrow 0} u = \langle u, v \rangle c'(t).
+    \end{equation*}
+\end{sol}
+
+\begin{prob} \textbf{Transporters on the group of rotations}\\
+    Consider the rotation group
+    \begin{equation*}
+        \mathcal{M} = \text{SO}(d) = \{ X \in \mathbb{R}^{d \times d} : X^T X = I, \det(X) = 1 \}
+    \end{equation*}
+    as a Riemannian submanifold of $\mathcal{E} = \mathbb{R}^{d \times d}$ with the usual Euclidean metric.\\
+    Recall that the tangent space at $X \in \mathcal{M}$ is given by
+    \begin{equation*}
+        T_X \mathcal{M} = \{ X \Omega : \Omega \in \text{SO}(d), \Omega + \Omega^\top = 0\}.
+    \end{equation*}
+    Hence, we can consider the transporters $\mathbf{T}$ defined by
+    \begin{equation*}
+        \mathbf{T}_{Y \leftarrow X} = Y \Omega
+    \end{equation*}
+    for $X, Y \in \mathcal{M}$ and $\Omega + \Omega^\top = 0$.\\
+    Note that if we store tangent vectors of $\mathcal{M}$ by their skew-symmetric parts, then this transporter requires no computation.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that $\mathbf{T}_{Y \leftarrow X}(U) = Y X^\top U$ for $(X, U) \in T \mathcal{M}$ and $Y \in \mathcal{M}$ and conclude that $\mathbf{T}$ is a transporter.
+        \item Show that $\mathbf{T}_{Y \leftarrow X}$ is an isometry from $T_X \mathcal{M}$ to $T_Y \mathcal{M}$.
+        \item Show that
+        \begin{equation*}
+            c : \mathbb{R} \rightarrow \text{SO}(d), \quad c(t) = X \exp(t \Omega)
+        \end{equation*}
+        is a geodesic on $\text{SO}(d)$, which is such that $c(0) = X$ and $c'(0) = V := X \Omega$.
+        \item Let $c : \mathbb{R} \rightarrow \text{SO}(d)$ be a geodesic of $\text{SO}(d)$ and $X = c(t_0), Y = c(t_1)$ for $t_1 \geq t_0 \geq 0$.
+        Is $\mathbf{T}_{Y \leftarrow X}$ equal to the parallel transport along $c$ from $t_0$ to $t_1$?
+    \end{enumerate}
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item For $(X, U) \in T \mathcal{M}$ and $Y \in \mathcal{M}$, we have $U = X \Omega$ for some skew-symmetric $\Omega$.\\
+        Then we have
+        \begin{align*}
+            \mathbf{T}_{Y \leftarrow X} (U) &= Y X^\top U\\
+            &= Y X^\top X \Omega\\
+            &= Y \Omega
+        \end{align*}
+        which lies in $T_Y \mathcal{M}$.\\
+        Therefore, $\mathbf{T}$ is a transporter.
+        \item For $U_1, U_2 \in T_X \mathcal{M}$, we have $U_1 = X \Omega_1$ and $U_2 = X \Omega_2$ for some skew-symmetric $\Omega_1$ and $\Omega_2$.\\
+        Then we have
+        \begin{align*}
+            \langle \mathbf{T}_{Y \leftarrow X} (U_1), \mathbf{T}_{Y \leftarrow X} (U_2) \rangle &= \langle Y X^\top X \Omega_1, Y X^\top X \Omega_2 \rangle\\
+            &= \langle Y \Omega_1, Y \Omega_2 \rangle\\
+            &= \tr (\Omega_1^\top Y^\top Y \Omega_2)\\
+            &= \tr (\Omega_1^\top \Omega_2)\\
+            &= \langle U_1, U_2 \rangle,
+        \end{align*}
+        which shows that $\mathbf{T}_{Y \leftarrow X}$ is an isometry.
+        \item Let $(X, V) \in T \mathcal{M}$, then we have $V = X \Omega$ for some skew-symmetric $\Omega$.\\
+        We've already showed that $R_X(V) = X \exp (X^\top V)$ is a retraction of $\text{SO}(d)$ at $X$, thus 
+        \begin{align*}
+            c(t) &= X \exp(t \Omega)\\
+            &= X \exp(t X^\top X \Omega)\\
+            &= X \exp(X^\top t V)\\
+            &= R_X(t V),
+        \end{align*}
+        is a smooth curve. Moreover, the acceleration of $c$ is
+        \begin{align*}
+            c''(t) &= \frac{D}{dt} c'(t)\\
+            &= \Proj _{c(t)} \frac{d}{dt} c'(t)\\
+            &= \Proj _{c(t)} (\frac{d}{dt} c(t) \Omega)\\
+            &= \Proj _{c(t)} (c(t) \Omega^2)\\
+            &= c(t) \Omega^2 - c(t) \frac{(\Omega^2)^\top c(t)^\top c(t) + c(t)^\top c(t) \Omega^2}{2}\\
+            &= c(t) \Omega^2 - c(t) \Omega^2\\
+            &= 0,
+        \end{align*}
+        which implies that $c$ is a geodesic on $\text{SO}(d)$.
+        \item Fix $U \in T_X \mathcal{M}$, then the transporter $\mathbf{T}_{c(t) \leftarrow X}$ is given by
+        \begin{equation*}
+            \mathbf{T}_{c(t) \leftarrow X} (U) = c(t) X^\top U,
+        \end{equation*}
+        whose covariant derivative along $c = X \exp(t \Omega)$ is
+        \begin{align*}
+            \frac{D}{dt} \mathbf{T}_{c(t) \leftarrow X} (U) &= \frac{D}{dt} (c(t) X^\top U)\\
+            &= \Proj _{c(t)} \frac{d}{dt} (c(t) X^\top U)\\
+            &= \Proj _{c(t)} (c'(t) X^\top U)\\
+            &= \Proj _{c(t)} (c(t) \Omega X^\top U)\\
+            &= c(t) \Omega X^\top U - c(t) \frac{U^\top X \Omega^\top c(t)^\top c(t) + c(t)^\top c(t) \Omega X^\top U}{2}\\
+            &= c(t) \Omega X^\top U - c(t) \frac{U^\top X \Omega^\top + \Omega X^\top U}{2}\\
+            &= c(t) \frac{\Omega X^\top U - U^\top X \Omega^\top}{2}.
+        \end{align*}
+        As $U \in T_X \mathcal{M}$, we have $U = X \tilde \Omega$ for some skew-symmetric $\tilde \Omega$, thus
+        \begin{align*}
+            \frac{D}{dt} \mathbf{T}_{c(t) \leftarrow X} (U) &= c(t) \frac{\Omega X^\top X \tilde \Omega - \tilde \Omega^\top X^\top X \Omega^\top}{2}\\
+            &= c(t) \frac{\Omega \tilde \Omega - \tilde \Omega^\top \Omega^\top}{2},
+        \end{align*}
+        which is zero when $\Omega \tilde \Omega$ is skew-symmetric, but not necessarily zero in general.\\
+        Therefore, $\mathbf{T}_{c(t) \leftarrow X}$ is not equal to the parallel transport along $c$ from $t_0$ to $t_1$.
+    \end{enumerate}
+\end{sol}
+\end{document}

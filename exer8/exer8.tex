@@ -1,0 +1,146 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 8}{Due date: }{Vivi}[https://github.com/Vivi26499]{24S153073}
+
+\begin{document}
+\begin{prob} \textbf{The Riemannian Newton method}\\
+    In this problem, you will implement Newton's method for optimization on the rotation matrices
+    \begin{equation*}
+        \mathcal{M} = \text{SO}(d) = \{Q \in \mathbb{R}^{d \times d} : Q^TQ = I, \det(Q) = 1\}.
+    \end{equation*}
+    As usual, we consider $\mathcal{M} = \text{SO}(d)$ as a Riemannian submanifold of $\mathbb{R}^{d \times d}$ with the usual Frobenius inner product.
+    Recall that orthogonal projection onto a tangent space of $\text{SO}(d)$ at $Q$, 
+    \begin{equation*}
+        T_Q\text{SO}(d) = \{U \in \mathbb{R}^{d \times d} : Q^\top U + U^\top Q = 0\} = \{Q\Omega: \Omega \in \mathbb{R}^{d \times d}, \Omega + \Omega^\top = 0\},
+    \end{equation*}
+    is given by
+    \begin{equation*}
+        \Proj _Q (U) = Q\frac{Q^\top U - U^\top Q}{2} = Q \text{skew}(Q^\top U).
+    \end{equation*}
+    Consider the following optimization problem
+    \begin{equation*}
+        \min_{Q \in \text{SO}(d)} f(Q), \quad f: \text{SO}(d) \to \mathbb{R}, \quad f(Q) = \norm{AQ - QB}^2,
+    \end{equation*}
+    for symmetric $A, B \in \mathbb{R}^{d \times d}$.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Compute the Riemannian gradient $\grad f(Q)$.
+        \item Compute the Riemannian Hessian $\Hess f(Q)$.
+        \item Choose a retraction $R$ on $\text{SO}(d)$.
+    \end{enumerate}
+    Newton's method is given by $Q_{k+1} = R_{Q_k}(U_k)$, where the step $U_k$ is the solution to the "Newton system":
+    \begin{equation*}
+        \Hess f(Q_k)[U_k] = -\grad f(Q_k).
+    \end{equation*}
+    To solve the Newton system, you may need to write $\Hess f(Q_k)$ and $\grad f(Q_k)$ as a matrix and a vector, respectively.
+    That is, you should choose a basis for $T_{Q_k}\text{SO}(d)$. There are two ways to do this.
+    \begin{enumerate}[label=(\arabic*), resume]
+        \item Generate a random set of matrices in the embedding space $\mathbb{R}^{d \times d}$,
+        and then  project them onto the tangent space $T_{Q_k}\text{SO}(d)$.
+        Will this form a linearly independent set of tangent vectors? 
+        How many random matrices do you need to obtain a basis for the tangent space ?
+        \item Propose an explicit orthonormal basis for each tangent space $T_{Q_k}\text{SO}(d)$.
+    \end{enumerate}
+    With a basis for each tangent space in hand, let us solve the Newton system. You will try three different methods.\\
+    Attention, in the following ways to solve the Newton system we suppose that the Riemannian Hessian is positive definite. 
+    To be sure that this is the case you should first run Riemannian Gradient Descent to be close to the a minimizer of $f$.
+    \begin{enumerate}[label=(\arabic*), resume]
+        \item Write $\Hess f(Q_k)$ and $\grad f(Q_k)$ in terms of a basis for $T_{Q_k}\text{SO}(d)$.
+        \item Solve the Newton system using the backslash symbol in MATLAB.
+        \item Solve the Newton system using the gradient descent method on 
+        \begin{equation*}
+            g: T_{Q_k}\text{SO}(d) \to \mathbb{R}, \quad g(U) = \frac{1}{2}\langle H[U], U \rangle - \langle b, U \rangle,
+        \end{equation*}
+        where $H = \Hess f(Q_k)$ and $b = -\grad f(Q_k)$. Determine an explicit expression for the optimal step size $\alpha_k$, supposing that $H$ is positive definite.
+        \item Solve the Newton system using the conjugate gradient method on $g$.
+        \item Compare the three methods in terms of the number of iterations and the computational cost.
+    \end{enumerate}
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item $f$ can be smoothly extended by
+        \begin{align*}
+            \bar f(Q) &= \norm{AQ - QB}^2\\
+            &= \norm{A}^2 + \norm{B}^2 - 2\langle AQ, QB \rangle,
+        \end{align*}
+        whose derivative along $Z \in T_Q \text{SO}(d)$ at $Q$ is
+        \begin{align*}
+            D \bar f(Q) [Z] &= -2\langle AQ, ZB \rangle - 2\langle AZ, QB \rangle\\
+            &= -2\langle Z, A Q B^\top \rangle - 2\langle Z, A^\top Q B \rangle\\
+            &= \langle Z, -2A Q B - 2A Q B \rangle\\
+            &= \langle Z, -4A Q B \rangle,
+        \end{align*}
+        which implies that the gradient of $\bar f$ at $Q$ is
+        \begin{equation*}
+            \grad \bar f(Q) = -4A Q B.
+        \end{equation*}
+        Then, the Riemannian gradient of $f$ at $Q$ is
+        \begin{align*}
+            \grad f(Q) &= \Proj_Q (\grad \bar f(Q))\\
+            &= Q \text{skew}(Q^\top \grad \bar f(Q))\\
+            &= Q \text{skew}(Q^\top (-4A Q B))\\
+            &= -2Q (Q^\top A Q B - B Q^\top A Q)\\
+            &= 2(Q B Q^\top A Q - A Q B)
+        \end{align*}
+        \item The Riemannian gradient can be smoothly extended by
+        \begin{equation*}
+            \overline {\grad f}(Q) = 2(Q B Q^\top A Q - A Q B),
+        \end{equation*}
+        whose derivative along $Z \in T_Q \text{SO}(d)$ at $Q$ is
+        \begin{equation*}
+            D \overline {\grad f}(Q) [Z] = 2(Z B Q^\top A Q + Q B Z^\top A Q + Q B Q^\top A Z - A Z B).
+        \end{equation*}
+        Then, the Riemannian Hessian of $f$ at $Q$ is
+        \begin{equation*}
+            \Hess f(Q) [Z] = \Proj_Q (D \overline {\grad f}(Q) [Z]).
+        \end{equation*}
+        \item $R_Q (Z) = Q \exp(Q^\top Z)$.
+        \item Since $\dim \text{SO}(d) = d(d-1)/2$, we need $d(d-1)/2$ random matrices to obtain a basis for the tangent space.
+        \item Let $e_1, \cdots, e_d$ be the standard unit basis of $\mathbb{R}^d$. Then,
+        \begin{equation*}
+            \left\{\frac{e_i e_j^\top - e_j e_i^\top}{\sqrt{2}}: 1 \leq i < j \leq d\right\}
+        \end{equation*}
+        forms an orthonormal basis for skew-symmetric matrices. Thus,
+        \begin{equation*}
+            \left\{Q \left(\frac{e_i e_j^\top - e_j e_i^\top}{\sqrt{2}}\right): 1 \leq i < j \leq d\right\}
+        \end{equation*}
+        forms an orthonormal basis for $T_Q \text{SO}(d)$.
+        \item Let $n = \dim \text{SO}(d) = d(d-1)/2$ and $Z_1, \cdots, Z_n$ be the orthonormal basis for $T_Q \text{SO}(d)$. Then the Newton system
+        \begin{equation*}
+            \Hess f(Q)[U] = -\grad f(Q)
+        \end{equation*}
+        can be written as
+        \begin{equation*}
+            H \alpha = b,
+        \end{equation*}
+        where $H_{ij} = \langle \Hess f(Q)[Z_i], Z_j \rangle$, $b_i = \langle -\grad f(Q), Z_i \rangle$, and $\alpha = (\alpha_1, \cdots, \alpha_n)^\top$.\\
+        Then the solution to the Newton system is
+        \begin{equation*}
+            U = \sum_{i=1}^n \alpha_i Z_i.
+        \end{equation*}
+        \item $\alpha = H \backslash b$.
+        \item Let $U \in T_{Q_k} \text{SO}(d)$. Then
+        \begin{align*}
+            D g(U) [V] &= \frac{1}{2}\langle H [V], U \rangle + \frac{1}{2}\langle H [U], V \rangle - \langle b, V \rangle\\
+            &= \langle H [U] - b, V \rangle
+        \end{align*}
+        which implies that the gradient of $g$ at $U, \grad g(U)$ is $H [U] - b$.\\
+        For $\alpha \in \mathbb{R}$, Let
+        \begin{align*}
+            h(\alpha) &= g(U + \alpha V)\\
+            &= \frac{1}{2}\langle H [U + \alpha V], U + \alpha V \rangle - \langle b, U + \alpha V \rangle\\
+            &= \frac{1}{2}\langle H [U], U \rangle + \alpha \langle H [U], V \rangle + \frac{1}{2}\alpha^2 \langle H [V], V \rangle - \langle b, U \rangle - \alpha \langle b, V \rangle\\
+            &= g(U) + \alpha \langle H [U] - b, V \rangle + \frac{1}{2}\alpha^2 \langle H [V], V \rangle,
+        \end{align*}
+        which is minimized at
+        \begin{equation*}
+            \alpha = -\frac{\langle H [U] - b, V \rangle}{\langle H [V], V \rangle}.
+        \end{equation*}
+        For the gradient descent method, $V = -\grad g(U) = b - H [U]$, and thus
+        \begin{align*}
+            \alpha &= - \frac{\langle H [U] - b, b - H [U] \rangle}{\langle H [b - H [U]], b - H [U] \rangle}\\
+            &= \frac{\norm{V}^2}{\langle H [V], V \rangle}.
+        \end{align*}
+    \end{enumerate}
+\end{sol}
+\end{document}
