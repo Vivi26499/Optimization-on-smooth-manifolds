@@ -1,0 +1,255 @@
+\documentclass[en, oneside]{assignment}
+
+\ProjectInfos{Optimization on smooth manifolds}{MATH-512}{Fall, 2024}{Exercise 12}{Due date: }{Vivi}[https://github.com/Vivi26499]{24S153073}
+
+\begin{document}
+\begin{prob} \textbf{The sphere is a smooth manifold}\\
+    Let us turn $\mathcal M = \mathbb S ^{d-1}$ into a smooth manifold. Let $p = (0, \cdots, 0, 1) \in \mathbb R ^d$, and define
+    \begin{equation*}
+        \mathcal U _+ = \mathbb S ^{d-1} \setminus \{p\}, \quad \mathcal U_- = \mathbb S ^{d-1} \setminus \{-p\},
+    \end{equation*}
+    \begin{align*}
+        \phi _+ : \mathcal U _+ &\rightarrow \mathbb R ^{d-1}, \quad \phi _+ (x) = \left(\frac{x_1}{1 - x_d}, \cdots, \frac{x_{d-1}}{1 - x_d}\right) \\
+        \phi _- : \mathcal U _- &\rightarrow \mathbb R ^{d-1}, \quad \phi _- (x) = \left(\frac{x_1}{1 + x_d}, \cdots, \frac{x_{d-1}}{1 + x_d}\right).
+    \end{align*}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that $(\mathcal U _+, \phi _+)$ and $(\mathcal U _-, \phi _-)$ are each $(d-1)$-dimensional charts for $\mathbb S ^{d-1}$.
+        \item Show that the charts $(\mathcal U _+, \phi _+)$ and $(\mathcal U _-, \phi _-)$ are compatible.
+        \item Deduce that $\mathcal A = \{(\mathcal U _+, \phi _+), (\mathcal U _-, \phi _-)\}$ is an atlas for $\mathbb S ^{d-1}$.
+        \item Let $\mathcal A ^+$ be the maximal atlas abtained from $\mathcal A$. 
+        Show that the atlas topology associated to $\mathcal A ^+$ is hausdorff and second-countable. Conclude that $\mathbb S ^{d-1}$ is a smooth manifold.
+    \end{enumerate}
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item As $\mathcal U _+$ and $\mathcal U _-$ are open subsets of $\mathbb S ^{d-1}$, and $\mathbb R ^{d-1}$ is open, and $\phi _+$ and $\phi _-$ are clearly smooth,
+        it suffices to show that $\phi _+$ and $\phi _-$ are bijections.\\
+        Let $x, y \in \mathcal U _+$, such that $\phi _+ (x) = \phi _+ (y)$. Taking the squared norm of $\phi _+ (x)$, we have
+        \begin{align*}
+            \norm{\phi _+ (x)}^2 &= \sum _{i=1}^{d-1} \left(\frac{x_i}{1 - x_d}\right)^2\\
+            &= \frac{\norm{x}^2 - x_d^2}{(1-x_d)^2}\\
+            &= \frac{1 - x_d^2}{(1-x_d)^2}\\
+            &= \frac{1+x_d}{1-x_d}.
+        \end{align*}
+        Similarly, we have
+        \begin{equation*}
+            \norm{\phi _+ (y)}^2 = \frac{1+y_d}{1-y_d}.
+        \end{equation*}
+        Since $\phi _+ (x) = \phi _+ (y)$, we have
+        \begin{align*}
+            \norm{\phi _+ (x)}^2 &= \norm{\phi _+ (y)}^2\\
+            \frac{1+x_d}{1-x_d} &= \frac{1+y_d}{1-y_d}\\
+            y_d - x_d &= x_d - y_d\\
+            x_d &= y_d.
+        \end{align*}
+        Then we have $x = y$, which implies that $\phi _+$ is injective.\\
+        Next, let $y \in \mathbb R ^{d-1}$, and define $x_d$ as
+        \begin{equation*}
+            x_d = \frac{\norm{y}^2 - 1}{\norm{y}^2 + 1} \in [-1, 1),
+        \end{equation*}
+        and
+        \begin{equation*}
+            (x_1, \cdots, x_{d-1}) = (1-x_d) y.
+        \end{equation*}
+        Then we have
+        \begin{align*}
+            \norm{x}^2 &= \norm{(x_1, \cdots, x_{d-1}, x_d)}^2\\
+            &= \norm{(1-x_d) y}^2 + x_d^2\\
+            &= \frac{4\norm{y}^2}{(\norm{y}^2 + 1)^2}  + \frac{(\norm{y}^2 - 1)^2}{(\norm{y}^2 + 1)^2}\\
+            &= \frac{(\norm{y}^2 + 1)^2}{(\norm{y}^2 + 1)^2}\\
+            &= 1,
+        \end{align*}
+        which implies that $x \in \mathcal U _+$. Therefore, $\phi _+$ is surjective. Then $\phi _+$ is a bijection with $\phi _+^{-1}$ given by
+        \begin{equation*}
+            \phi _+^{-1} (y) = \left(\frac{2 y_1}{\norm{y}^2 + 1}, \cdots, \frac{2 y_{d-1}}{\norm{y}^2 + 1}, \frac{\norm{y}^2 - 1}{\norm{y}^2 + 1}\right).
+        \end{equation*}
+        Same argument can be applied to $\phi _-$, and we can show that $\phi _-$ is a bijection with $\phi _-^{-1}$ given by
+        \begin{equation*}
+            \phi _-^{-1} (y) = \left(\frac{2 y_1}{\norm{y}^2 + 1}, \cdots, \frac{2 y_{d-1}}{\norm{y}^2 + 1}, \frac{1 - \norm{y}^2}{\norm{y}^2 + 1}\right).
+        \end{equation*}
+        Therefore, $(\mathcal U _+, \phi _+)$ and $(\mathcal U _-, \phi _-)$ are each $(d-1)$-dimensional charts for $\mathbb S ^{d-1}$.
+        \item Note that $\phi _+ (\mathcal U _+ \cap \mathcal U _-) = \phi _- (\mathcal U _+ \cap \mathcal U _-) = \mathbb R ^{d-1} \setminus \{0\}$ 
+        which is open in $\mathbb R ^{d-1}$. Moreover, for all $y \in \mathbb R ^{d-1} \setminus \{0\}$, we have
+        \begin{align*}
+            \phi _+ \circ \phi _-^{-1} (y) &= \phi _+ 
+            \left(\frac{2 y_1}{\norm{y}^2 + 1}, \cdots, \frac{2 y_{d-1}}{\norm{y}^2 + 1}, \frac{1 - \norm{y}^2}{\norm{y}^2 + 1}\right)\\
+            &= \left(\frac{y_1}{\norm{y}^2}, \cdots, \frac{y_{d-1}}{\norm{y}^2}\right)\\
+            &= \frac{y}{\norm{y}^2} \in C^\infty (\mathbb R ^{d-1} \setminus \{0\}).
+        \end{align*}
+        Similarly, we have $\phi _- \circ \phi _+^{-1} (y) = \frac{y}{\norm{y}^2} \in C^\infty (\mathbb R ^{d-1} \setminus \{0\})$. \\
+        Therefore, the charts $(\mathcal U _+, \phi _+)$ and $(\mathcal U _-, \phi _-)$ are compatible.
+        \item Since $(\mathcal U _+, \phi _+)$ and $(\mathcal U _-, \phi _-)$ are compatible $(d-1)$-dimensional charts for $\mathbb S ^{d-1}$,
+        and $\mathcal U _+ \cup \mathcal U _- = \mathbb S ^{d-1}$, 
+        we have $\mathcal A = \{(\mathcal U _+, \phi _+), (\mathcal U _-, \phi _-)\}$ is an atlas for $\mathbb S ^{d-1}$.
+        \item
+    \end{enumerate}
+\end{sol}
+
+\begin{prob} \textbf{Intersection of g-convex sets}\\
+    The intersection of two convex subsets of a Euclidean space is convex. However, in general, the intersection of two g-convex sets is not g-convex.
+    \begin{enumerate}[label=(\arabic*)]
+        \item Give an example of a Riemannian manifold $(\mathcal M, \langle \cdot, \cdot \rangle)$ and 
+        two g-convex sets $S_1, S_2 \subseteq \mathcal M$ such that $S_1 \cap S_2$ is not g-convex.
+    \end{enumerate}
+    If we make additional assumptions, then the intersection of two g-convex sets is g-convex. 
+    A subset $S \subseteq \mathcal M$ is geodesically strongly convex if for any two points $x, y \in S$, 
+    among all geodesics segments $\gamma : [0, 1] \rightarrow S$ with $\gamma(0) = x$ and $\gamma(1) = y$, 
+    exactly one of them is minimizing and this minimizing geodesic lies entirely in $S$.
+    \begin{enumerate}[label=(\arabic*), resume]
+        \item Let $S_1, S_2 \subseteq \mathcal M$ be two geodesically strongly convex sets. Show that $S_1 \cap S_2$ is geodesically strongly convex.
+    \end{enumerate}
+    
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Let $\mathcal M = \mathbb S ^1$ be the unit circle in $\mathbb R^2$ with the standard metric. Define the following two g-convex sets:
+        \begin{align*}
+            S_1 &= \mathbb S ^1 \setminus \{(0, 1)\}\\
+            S_2 &= \mathbb S ^1 \setminus \{(0, -1)\}.
+        \end{align*}
+        Then $S_1$ and $S_2$ are g-convex sets. However, the intersection $S_1 \cap S_2 = \mathbb S ^1 \setminus \{(0, 1), (0, -1)\}$ is not g-convex 
+        because it's not connected.
+        \item Let $x, y \in S_1 \cap S_2$ and $\gamma : [0, 1] \rightarrow S_1 \cap S_2$ be the unique geodesic segment with $\gamma(0) = x$ and $\gamma(1) = y$.
+        Since $S_1, S_2$ are geodesically strongly convex, $\gamma(t) \in S_1$ and $\gamma(t) \in S_2$ for all $t \in [0, 1]$. 
+        Therefore, $\gamma(t) \in S_1 \cap S_2$ for all $t \in [0, 1]$, which implies that $S_1 \cap S_2$ is geodesically strongly convex.
+    \end{enumerate}
+\end{sol}
+
+\begin{prob} \textbf{Fréchet mean on hemisphere}\\
+    Write some code to generate random points $x_1, \cdots, x_n$ on a hemisphere
+    \begin{equation*}
+        \mathbb S ^{d-1}_+:= \{x = (x^{(1)}, \cdots, x^{(d)}) \in \mathbb R^d : x^{(d)} > 0, \norm x = 1\}
+    \end{equation*}
+    near the north pole, and implement the cost function for the intrinsic averaging, that is
+    \begin{equation*}
+        f: \mathbb S ^{d-1}_+ \rightarrow \mathbb R, \quad f(x) = \frac{1}{2n} \sum_{i=1}^n \dist (x, x_i)^2.
+    \end{equation*}
+    A global minimizer of $f$ is called the Fréchet mean of $x_1, \cdots, x_n$.\\
+    Recall that the squared distance between two points $x, y \in \mathbb S ^{d-1}_+$ is given by
+    \begin{equation*}
+        \dist(x, y)^2 = \arccos^2(x^\top y),
+    \end{equation*}
+    and the Riemannian gradient of the squared distance is given by
+    \begin{equation*}
+        \grad \left(x \mapsto \frac{1}{2} \dist (x, y)\right)(x) = \frac{\dist(x, y)}{\sin(\dist(x, y))} (\cos(\dist(x, y)) x - y).
+    \end{equation*}
+\end{prob}
+
+\begin{prob} \textbf{Robust covariance estimation}\\
+    Consider $n$ points $x_1, \cdots, x_n \in \mathbb R^d$ sampled independently and identically distributed from a distribution $P$ with zero mean.
+    We want to estimate the covariance matrix of $P$. If $P$ is a zero-mean normal distribution with covariance $\Sigma_{true} \in \mathbb R^{d \times d}$, 
+    then the maximum likelihood estimation amounts to minimizing the negative log-likelihood
+    \begin{equation*}
+        \Sigma \mapsto \log (\det \Sigma) + \frac{1}{n} \sum_{j=1}^n x_j^\top \Sigma^{-1} x_j
+    \end{equation*}
+    over the $d \times d$ positive definite matrices
+    \begin{equation*}
+        \mathcal P_d = \{\Sigma \in \mathbb R^{d \times d} : \Sigma = \Sigma^\top, \Sigma \succ 0\}.
+    \end{equation*}
+    The sample covariance matrix $\Sigma^* = \frac{1}{n} \sum_{j=1}^n x_j x_j^\top$ is a minimizer of this nagetive log-likelihood.\\
+    The sample covariance is not robust to outliers. So if $P$ is not normal but some heavy-tailed distribution, then the sample covariance is not suitable. 
+    We can obtain a robust estimation of the covariance by minimizing the function
+    \begin{equation*}
+        f: \mathcal P_d \rightarrow \mathbb R, \quad f(\Sigma) = \log (\det \Sigma) + \frac{1}{n} \sum_{j=1}^n d \log (x_j^\top \Sigma^{-1} x_j),
+    \end{equation*}
+    which places less emphasis on outliers (points far from the mean). A minimizer of this function is called "Tyler's M-estimator of scatter".
+    It does not have a closed form solution, and the cost function $f$ is non-convex in the Euclidean sense.
+    However, it is g-convex in an appropriate metric, and so a minimizer can be found efficiently(e.g., with RGD).\\
+    We consider $\mathcal M = \mathcal P_d$ as an open subset of the symmetric $d \times d$ matrices, and endow it with the Fisher-Rao metric
+    \begin{equation*}
+        \langle \dot \Sigma _1, \dot \Sigma _2 \rangle_{\Sigma} = \tr (\Sigma^{-1} \dot \Sigma _1 \Sigma^{-1} \dot \Sigma _2), 
+    \end{equation*}
+    for $\Sigma \in \mathcal P_d$ and $\dot \Sigma _1, \dot \Sigma _2 \in \text T _\Sigma \mathcal P_d = \{ \dot \Sigma \in \mathbb R^{d \times d} : \dot \Sigma = \dot \Sigma^\top\}$.
+    In this Riemannian metric, $\mathcal P_d$ is complete and geodesically strongly convex. 
+    For every $\Sigma_0, \Sigma_1 \in \mathcal P_d$, there is a unique geodesic segment between them, given by
+    \begin{equation*}
+        \gamma(t) = \Sigma_0^{1/2} (\Sigma_0^{-1/2} \Sigma_1 \Sigma_0^{-1/2})^t \Sigma_0^{1/2}, \quad t \in [0, 1].
+    \end{equation*}
+    This geodesic segment is minimizing. Alternatively, for every $\Sigma_0, \Sigma_1 \in \mathcal P_d$, 
+    there exists an invertible $V \in \mathbb R^{d \times d}$ and a diagonal $D \in \mathcal P_d$ such that $\Sigma_0 = V V^\top, \Sigma_1 = V D V^\top$. In this case, 
+    \begin{equation*}
+        \gamma(t) = V D^t V^\top, \quad t \in [0, 1].
+    \end{equation*}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Show that the function $\Sigma \mapsto \log (\det \Sigma)$ is g-convex.
+        \item Show that if $g: \mathcal P_d \rightarrow \mathbb R$ is g-convex, then the function $h(\Sigma) = g(\Sigma^{-1})$ is g-convex.
+        \item Show that if $x \in \mathbb R^d$, then the function $\Sigma \mapsto \log (x^\top \Sigma x)$ is g-convex.
+        \item Conclude that the function $f$ is g-convex.
+    \end{enumerate}
+\end{prob}
+
+\begin{sol}
+    \begin{enumerate}[label=(\arabic*)]
+        \item Let $\Sigma_0, \Sigma_1 \in \mathcal P_d$, then the unique geodesic segment between $\Sigma_0$ and $\Sigma_1$ is given by
+        \begin{equation*}
+            \gamma(t) = \Sigma_0^{1/2} (\Sigma_0^{-1/2} \Sigma_1 \Sigma_0^{-1/2})^t \Sigma_0^{1/2}, \quad t \in [0, 1].
+        \end{equation*}
+        For all $t \in [0, 1]$, we have
+        \begin{align*}
+            \log (\det \gamma(t)) &= \log (\det (\Sigma_0^{1/2} (\Sigma_0^{-1/2} \Sigma_1 \Sigma_0^{-1/2})^t \Sigma_0^{1/2})) \\
+            &= \log \left(\det (\Sigma_0^{1/2}) \det (\Sigma_0^{-1/2} \Sigma_1 \Sigma_0^{-1/2})^t \det (\Sigma_0^{1/2})\right) \\
+            &= \log (\det (\Sigma_0)) + t \log (\det (\Sigma_0^{-1/2} \Sigma_1 \Sigma_0^{-1/2})) \\
+            &= \log (\det (\Sigma_0)) + t \log \left(\det (\Sigma_0^{-1/2}) \det (\Sigma_1) \det (\Sigma_0^{-1/2})\right) \\
+            &= \log (\det (\Sigma_0)) + t \log (\det (\Sigma_1)) - t \log (\det (\Sigma_0)) \\
+            &= (1 - t) \log (\det (\Sigma_0)) + t \log (\det (\Sigma_1))
+        \end{align*}
+        Therefore, $\log (\det \Sigma)$ is g-convex. Moreover, it's g-affine.
+        \item Let $\Sigma_0, \Sigma_1 \in \mathcal P_d$, then the unique geodesic segment between $\Sigma_0$ and $\Sigma_1$ is given by
+        \begin{equation*}
+            \gamma(t) = \Sigma_0^{1/2} (\Sigma_0^{-1/2} \Sigma_1 \Sigma_0^{-1/2})^t \Sigma_0^{1/2}, \quad t \in [0, 1].
+        \end{equation*}
+        Let $g: \mathcal P_d \rightarrow \mathbb R$ be g-convex, then for all $t \in [0, 1]$, we have
+        \begin{align*}
+            h(\gamma(t)) &= g(\gamma(t)^{-1}) \\
+            &\leq (1-t) g(\Sigma_0^{-1}) + t g(\Sigma_1^{-1}) \\
+            &= (1-t) h(\Sigma_0) + t h(\Sigma_1).
+        \end{align*}
+        Therefore, $h$ is g-convex.
+        \item Fix $x \in \mathbb R^d \setminus \{0\}$ and $F: \mathcal P_d \rightarrow \mathbb R$ given by $F(\Sigma) = \log (x^\top \Sigma x)$.
+        Let $\Sigma \in \mathcal P_d$ and $\dot \Sigma \in \text T _\Sigma \mathcal P_d$, 
+        then the differential of $F$ at $\Sigma$ in the direction $\dot \Sigma$ is given by
+        \begin{align*}
+            DF(\Sigma)(\dot \Sigma) &= \frac{d}{dt} \log (x^\top (\Sigma + t \dot \Sigma) x) \bigg|_{t=0} \\
+            &= (x^\top \Sigma x)^{-1} x^\top \dot \Sigma x \\
+            &= (x^\top \Sigma x)^{-1} \tr (\dot \Sigma x x^\top).
+        \end{align*}
+        Then the Euclidean gradient of $F$ at $\Sigma$ is given by
+        \begin{equation*}
+            \grad _\mathcal E F (\Sigma) = \frac{x x^\top}{x^\top \Sigma x}.
+        \end{equation*}
+        The Euclidean Hessian of $F$ at $\Sigma$ is given by
+        \begin{align*}
+            \Hess _\mathcal E F (\Sigma)(\dot \Sigma) &= D \grad _\mathcal E F (\Sigma)(\dot \Sigma) \\
+            &= D \left(\frac{x x^\top}{x^\top \Sigma x}\right)(\dot \Sigma) \\
+            &= -\frac{x x^\top x^\top \dot \Sigma x}{(x^\top \Sigma x)^2}.
+        \end{align*}
+        Then the Riemannian Hessian of $F$ at $\Sigma$ is given by
+        \begin{align*}
+            \Hess _\mathcal M F (\Sigma)(\dot \Sigma) &= \Sigma \Hess _\mathcal E F (\Sigma)(\dot \Sigma) \Sigma 
+            + \frac{\dot \Sigma \grad _\mathcal E F (\Sigma) \Sigma + \Sigma \grad _\mathcal E F (\Sigma) \dot \Sigma}{2}\\
+            &= -\frac{\Sigma x x^\top x^\top \dot \Sigma x \Sigma}{(x^\top \Sigma x)^2} + 
+            \frac{\dot \Sigma x x^\top \Sigma + \Sigma x x^\top \dot \Sigma}{2 x^\top \Sigma x}\\
+            &= \frac{1}{2 x^\top \Sigma x} (\dot \Sigma x x^\top \Sigma + \Sigma x x^\top \dot \Sigma 
+            - \frac{2 \Sigma x x^\top x^\top \dot \Sigma x \Sigma}{x^\top \Sigma x}).
+        \end{align*}
+        To show the Riemannian Hessian is positive semidefinite,
+        \begin{align*}
+            \langle \Hess _\mathcal M F (\Sigma)(\dot \Sigma), \dot \Sigma \rangle _\Sigma &= 
+            \tr \left(\Sigma^{-1} \Hess _\mathcal M F (\Sigma)(\dot \Sigma) \Sigma^{-1} \dot \Sigma\right) \\
+            &= \frac{1}{2 x^\top \Sigma x} \tr \left(\Sigma^{-1} (\dot \Sigma x x^\top \Sigma + \Sigma x x^\top \dot \Sigma 
+            - \frac{2 \Sigma x x^\top x^\top \dot \Sigma x \Sigma}{x^\top \Sigma x}) \Sigma^{-1} \dot \Sigma\right) \\
+            &= \frac{1}{2 x^\top \Sigma x} \tr \left( \Sigma^{-1} \dot \Sigma x x^\top \dot \Sigma + x x^\top \dot \Sigma \Sigma^{-1} \dot \Sigma 
+            - \frac{2 x x^\top x^\top \dot \Sigma x \dot \Sigma}{x^\top \Sigma x} \right) \\
+            &= \frac{1}{x^\top \Sigma x} \left( x^\top \dot \Sigma \Sigma^{-1} \dot \Sigma x
+            - \frac{(x^\top \dot \Sigma x)^2}{x^\top \Sigma x} \right) \\
+            &= \frac{1}{(x^\top \Sigma x)^2} \left[ (x^\top \Sigma x) (x^\top \dot \Sigma \Sigma^{-1} \dot \Sigma x) - (x^\top \dot \Sigma x)^2 \right] \geq 0.
+        \end{align*}
+        Therefore, $F(\Sigma) = \log (x^\top \Sigma x)$ is g-convex.
+        \item As shown in (1), (2), and (3), the functions $\log (\det \Sigma)$, $\log (\det \Sigma^{-1})$, and $\log (x^\top \Sigma x)$ are g-convex.
+        Therefore, the function $f$ is g-convex as a non-negative combination of g-convex functions.
+    \end{enumerate}
+\end{sol}
+
+\end{document}
