@@ -86,11 +86,11 @@
     \end{enumerate}
 \end{sol}
 
-\begin{prob} \textbf{Intersection of g-convex sets}\\
-    The intersection of two convex subsets of a Euclidean space is convex. However, in general, the intersection of two g-convex sets is not g-convex.
+\begin{prob} \textbf{Smooth functions on the sphere}\\
+    Let $\mathcal A$ be the atlas for $\mathbb S ^{d-1}$ from the previous exercise.
     \begin{enumerate}[label=(\arabic*)]
-        \item Give an example of a Riemannian manifold $(\mathcal M, \langle \cdot, \cdot \rangle)$ and 
-        two g-convex sets $S_1, S_2 \subseteq \mathcal M$ such that $S_1 \cap S_2$ is not g-convex.
+        \item Let $f: \mathbb S ^{d-1} \rightarrow \mathbb R$ be a smooth function as seen through the charts of $\mathcal A$.
+        Show that $f$ has a smooth extension $\bar f$ to a neighborhood of $\mathbb S ^{d-1}$ in $\mathbb R ^d$.
     \end{enumerate}
     If we make additional assumptions, then the intersection of two g-convex sets is g-convex. 
     A subset $S \subseteq \mathcal M$ is geodesically strongly convex if for any two points $x, y \in S$, 
@@ -104,13 +104,8 @@
 
 \begin{sol}
     \begin{enumerate}[label=(\arabic*)]
-        \item Let $\mathcal M = \mathbb S ^1$ be the unit circle in $\mathbb R^2$ with the standard metric. Define the following two g-convex sets:
-        \begin{align*}
-            S_1 &= \mathbb S ^1 \setminus \{(0, 1)\}\\
-            S_2 &= \mathbb S ^1 \setminus \{(0, -1)\}.
-        \end{align*}
-        Then $S_1$ and $S_2$ are g-convex sets. However, the intersection $S_1 \cap S_2 = \mathbb S ^1 \setminus \{(0, 1), (0, -1)\}$ is not g-convex 
-        because it's not connected.
+        \item Since $f$ is smooth, then for all $x \in \mathbb S ^{d-1}$, there exists a chart $(\mathcal U, \phi)$ in $\mathcal A$ 
+        such that $x \in \mathcal U$ and $f \circ \phi^{-1} : \phi(\mathcal U) \rightarrow \mathbb R$ is smooth at $\phi(x)$.
         \item Let $x, y \in S_1 \cap S_2$ and $\gamma : [0, 1] \rightarrow S_1 \cap S_2$ be the unique geodesic segment with $\gamma(0) = x$ and $\gamma(1) = y$.
         Since $S_1, S_2$ are geodesically strongly convex, $\gamma(t) \in S_1$ and $\gamma(t) \in S_2$ for all $t \in [0, 1]$. 
         Therefore, $\gamma(t) \in S_1 \cap S_2$ for all $t \in [0, 1]$, which implies that $S_1 \cap S_2$ is geodesically strongly convex.
